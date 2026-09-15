@@ -60,7 +60,7 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: clamp(20px, 2.5vw, 32px) clamp(24px, 3.5vw, 48px) 0 clamp(24px, 3.5vw, 48px);
+      padding: clamp(24px, 3.5vw, 48px) clamp(24px, 3.5vw, 48px) 0 clamp(24px, 3.5vw, 48px);
       position: relative;
     }
 
@@ -249,17 +249,21 @@
       letter-spacing: -0.01em;
       margin-top: clamp(16px, 2.5vh, 24px);
       opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.25s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      visibility: hidden;
+      max-height: 0;
+      transform: translateY(16px);
+      transition: opacity 0.25s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.25s;
       pointer-events: none;
     }
 
     .color-card:hover .card-desc,
     .color-card:focus-within .card-desc {
       opacity: 0.95;
+      visibility: visible;
+      max-height: 400px;
       transform: translateY(0);
       pointer-events: auto;
-      transition-delay: 0.08s;
+      transition-delay: 0.05s;
     }
 
     .card-dark .card-desc {
@@ -346,45 +350,43 @@
     <!-- 3. Bottom Interactive Color Cards Bar (Full 100vw Edge-to-Edge, No Crop Marks) -->
     <section class="bottom-cards-bar" aria-label="Explore more information">
       
-      <!-- Pink Card: Automated Engine -->
+      <!-- Pink Card: Finali AI -->
       <article class="color-card card-pink" tabindex="0">
         <div class="card-title">
-          <span>Automated Engine</span>
+          <span>Finali AI</span>
         </div>
         <p class="card-desc">
-          Deterministic rendering connects approved InDesign masters with live campaign data to output 80+ print-ready PDF/X files in seconds.
+          Transform single master layouts into dozens of publisher-compliant, print-ready, and digital deliverables in seconds. Stop manually rebuilding artwork, resizing assets, and fighting pre-press specifications.
         </p>
       </article>
 
-      <!-- Cyan Card: Briefd -->
+      <!-- Cyan Card: Briefd (by finali) -->
       <article class="color-card card-cyan" tabindex="0">
         <div class="card-title">
-          <span>Briefd</span>
+          <span>Briefd (by finali)</span>
         </div>
         <p class="card-desc">
-          A focused visual workspace that translates static spreadsheets into interactive, scale-accurate format cards shared via a single live link.
+          Drop your media spreadsheet and watch cryptic format rows turn into scaled, interactive canvases in seconds. Understand proportions instantly, eliminate version chaos, and get clean, spec-ready templates without leaving your browser. For free.
         </p>
       </article>
 
-      <!-- Yellow Card (Exact Match to Figma Frame 16) -->
+      <!-- Yellow Card: Verified Publisher Specs -->
       <article class="color-card card-yellow" tabindex="0">
         <div class="card-title">
-          <span>Lorem Ipsum</span>
-          
+          <span>Publisher Specs</span>
         </div>
         <p class="card-desc">
-          Designers and technologists who spent years inside agencies. We know the quiet dread of receiving a 47-row spreadsheet on a Friday afternoon and being expected to deliver production-ready artwork across thirty placements by Monday morning.
+          Centralized, real-time specifications for major Nordic media houses, out-of-home networks, and print distributors. Automatic bleed, color profile, and dimension validation built right in.
         </p>
       </article>
 
-      <!-- Dark Card -->
+      <!-- Dark Card: Pre-Press Assurance -->
       <article class="color-card card-dark" tabindex="0">
         <div class="card-title">
-          <span>Publisher Specs</span>
-          
+          <span>Pre-Press Precision</span>
         </div>
         <p class="card-desc">
-          Centralized pre-flight rules and verified delivery specifications for major Nordic media houses, distributörer, and out-of-home networks.
+          ALG 20 compliant pre-press assurance. Deterministic rendering paired with human-in-the-loop visual inspection guarantees 100% verified campaign output before delivery.
         </p>
       </article>
 
