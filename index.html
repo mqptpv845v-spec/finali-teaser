@@ -22,7 +22,7 @@
 
   <style>
     
-    /* Custom Tone-on-Tone Selection (Pink & Plum) */
+    /* Custom Tone-on-Tone Selection */
     ::selection {
       background-color: #FFADEB;
       color: #520037;
@@ -30,6 +30,46 @@
     ::-moz-selection {
       background-color: #FFADEB;
       color: #520037;
+    }
+
+    /* Cyan Card: Inverts to dark petroleum background with cyan text */
+    .card-cyan ::selection {
+      background-color: #173537;
+      color: #84CCEF;
+    }
+    .card-cyan ::-moz-selection {
+      background-color: #173537;
+      color: #84CCEF;
+    }
+
+    /* Pink Card: Inverts to deep plum background with pink text */
+    .card-pink ::selection {
+      background-color: #520037;
+      color: #FFADEB;
+    }
+    .card-pink ::-moz-selection {
+      background-color: #520037;
+      color: #FFADEB;
+    }
+
+    /* Yellow Card: Inverts to taupe background with yellow text */
+    .card-yellow ::selection {
+      background-color: #7C705A;
+      color: #FFFFA8;
+    }
+    .card-yellow ::-moz-selection {
+      background-color: #7C705A;
+      color: #FFFFA8;
+    }
+
+    /* Dark Card: Inverts to white background with black text */
+    .card-dark ::selection {
+      background-color: #FFFFFF;
+      color: #000000;
+    }
+    .card-dark ::-moz-selection {
+      background-color: #FFFFFF;
+      color: #000000;
     }
 
     /* Reset & Base */
@@ -157,7 +197,7 @@
       font-size: clamp(3.5rem, 6.8vw, 8.5rem);
       font-weight: 700;
       line-height: 0.97;
-      letter-spacing: -0.04em;
+      letter-spacing: -0.018em;
       color: #000000;
       margin-bottom: clamp(20px, 2.8vh, 38px);
       width: 100%;
@@ -383,10 +423,10 @@
       <!-- Dark Card: Pre-Press Assurance -->
       <article class="color-card card-dark" tabindex="0">
         <div class="card-title">
-          <span>Pre-Press Precision</span>
+          <span>Human Oversight</span>
         </div>
         <p class="card-desc">
-          ALG 20 compliant pre-press assurance. Deterministic rendering paired with human-in-the-loop visual inspection guarantees 100% verified campaign output before delivery.
+          Automation generates the volume, but perfection requires human judgment. We integrate expert human-in-the-loop review at every critical checkpoint to control, verify, and guarantee uncompromising quality before anything goes to press.
         </p>
       </article>
 
