@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Finali AI & Briefd — The Missing Layer in Creative Production</title>
   <meta name="description" content="Stop emailing spreadsheets. Finali AI and Briefd translate media plans into scale-accurate format cards and automated, print-ready campaign assets.">
 
@@ -21,46 +21,45 @@
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
 
   <style>
-    /* Reset & Base */
+    /* Reset & Viewport Constraints (Strict 100vw & 100vh) */
     *, *::before, *::after {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
 
-    html {
-      scroll-behavior: smooth;
-      background-color: #FFFFFF;
-    }
-
-    body {
-      width: 100%;
-      min-height: 100vh;
+    html, body {
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      max-height: 100dvh;
+      overflow: hidden;
       background-color: #FFFFFF;
       color: #191A1C;
       font-family: 'Instrument Sans', -apple-system, BlinkMacSystemFont, sans-serif;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      padding: clamp(16px, 2.5vw, 32px);
+    }
+
+    /* Main Flex Shell */
+    .screen-canvas {
+      width: 100%;
+      height: 100%;
       display: flex;
       flex-direction: column;
-      gap: clamp(24px, 3.5vw, 40px);
-    }
-
-    /* Prepress Crop Marks Frame (0.5px hairline, 12px length, 4px corner gap) */
-    .crop-frame {
+      justify-content: space-between;
+      padding: clamp(14px, 1.8vw, 24px);
       position: relative;
-      width: 100%;
     }
 
+    /* Authentic Hairline Crop Marks (0.5px hairline, 12px length, 4px corner gap) */
     .crop-mark {
       position: absolute;
       background-color: #000000;
       pointer-events: none;
-      z-index: 20;
+      z-index: 30;
     }
 
-    /* Hairline Crop Lines */
     .crop-tl-v { top: -16px; left: 0; width: 0.5px; height: 12px; }
     .crop-tl-h { top: 0; left: -16px; width: 12px; height: 0.5px; }
 
@@ -76,11 +75,12 @@
     /* Header */
     header {
       width: 100%;
+      height: clamp(36px, 4.5vh, 48px);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 12px 0;
-      background: #FFFFFF;
+      flex-shrink: 0;
+      position: relative;
     }
 
     .logo-link {
@@ -91,22 +91,9 @@
     }
 
     .logo-link svg {
-      height: clamp(24px, 2.2vw, 30px);
+      height: clamp(24px, 2.5vh, 32px);
       width: auto;
       display: block;
-    }
-
-    .header-nav {
-      display: flex;
-      align-items: center;
-      gap: clamp(16px, 2.5vw, 32px);
-      font-size: clamp(0.85rem, 0.95vw, 1rem);
-      font-weight: 500;
-    }
-
-    .status-badge {
-      color: rgba(25, 26, 28, 0.6);
-      font-weight: 500;
     }
 
     .header-cta {
@@ -117,7 +104,10 @@
       font-weight: 600;
       font-size: clamp(0.8rem, 0.9vw, 0.95rem);
       border-radius: 0px;
-      transition: border-radius 0.4s ease, background-color 0.2s ease;
+      transition: border-radius 0.35s ease, background-color 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .header-cta:hover {
@@ -125,93 +115,17 @@
       background-color: #000000;
     }
 
-    /* Hero Headline Section */
-    .hero-section {
-      width: 100%;
-      padding: 8px 0 20px 0;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-    }
-
-    h1 {
-      font-size: clamp(2.8rem, 6.2vw, 7.5rem);
-      font-weight: 700;
-      line-height: 1.02;
-      letter-spacing: -0.035em;
-      color: #191A1C;
-      margin-bottom: clamp(16px, 2vw, 24px);
-    }
-
-    h1 .badge-sub {
-      display: inline-block;
-      font-size: 0.45em;
-      letter-spacing: -0.02em;
-      vertical-align: top;
-      margin-left: 6px;
-      color: rgba(25, 26, 28, 0.7);
-    }
-
-    .hero-lead {
-      font-size: clamp(1.15rem, 1.6vw, 1.85rem);
-      font-weight: 400;
-      line-height: 1.45;
-      color: rgba(25, 26, 28, 0.85);
-      max-width: 920px;
-      margin-bottom: clamp(24px, 3vw, 36px);
-    }
-
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .btn-primary {
-      background-color: #191A1C;
-      color: #FFFFFF;
-      text-decoration: none;
-      padding: 16px 36px;
-      font-size: clamp(0.95rem, 1.05vw, 1.1rem);
-      font-weight: 600;
-      border-radius: 0px;
-      transition: border-radius 0.4s ease, background-color 0.2s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .btn-primary:hover {
-      border-radius: 24px;
-      background-color: #000000;
-    }
-
-    .btn-secondary {
-      border: 1px solid #191A1C;
-      color: #191A1C;
-      text-decoration: none;
-      padding: 16px 32px;
-      font-size: clamp(0.95rem, 1.05vw, 1.1rem);
-      font-weight: 600;
-      border-radius: 0px;
-      transition: border-radius 0.4s ease, background-color 0.2s ease;
-    }
-
-    .btn-secondary:hover {
-      border-radius: 24px;
-      background-color: rgba(25, 26, 28, 0.05);
-    }
-
-    /* Bento Grid (4x2 Unified Canvas with Halftone Backdrop & Colorful Rectangles) */
-    .bento-wrapper {
+    /* Bento Center Stage (Fills remaining height) */
+    .bento-stage {
+      flex: 1;
+      min-height: 0; /* Crucial: allows flex child to shrink properly within 100vh */
+      margin: clamp(10px, 1.4vh, 18px) 0;
       position: relative;
-      width: 100%;
+      background-color: #E6E6E6;
       overflow: hidden;
-      background-color: #EAEAEA;
     }
 
-    .bento-bg-image {
+    .bento-backdrop {
       position: absolute;
       inset: 0;
       width: 100%;
@@ -224,177 +138,218 @@
       position: relative;
       z-index: 10;
       width: 100%;
+      height: 100%;
       display: grid;
       grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: 1.15fr 1fr;
       gap: 0px;
     }
 
-    .bento-tile {
-      aspect-ratio: 1 / 1;
-      width: 100%;
+    /* Bento Tile Common Styles */
+    .tile {
       position: relative;
       overflow: hidden;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: clamp(20px, 2.2vw, 36px);
-      transition: transform 0.3s ease, filter 0.3s ease;
+      padding: clamp(14px, 1.8vw, 28px);
     }
 
-    /* Tile variations */
-    .tile-transparent {
-      background: transparent;
+    .tile-tag {
+      font-size: clamp(0.72rem, 0.85vw, 0.95rem);
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      opacity: 0.9;
     }
 
-    /* Tile 2: Deep Solid Plum */
-    .tile-plum-solid {
-      background-color: #520037;
+    /* Row 1, Col 1-2: Big Tone-on-Tone Hero Headline Banner */
+    .tile-hero-span {
+      grid-column: span 2;
+      background-color: #173537;
+      color: #84CCEF;
+      justify-content: center;
+      gap: clamp(8px, 1.2vh, 16px);
     }
 
-    /* Tile 3: Bright Magenta / Pink */
+    .hero-h1 {
+      font-size: clamp(2rem, 3.4vw, 4.2rem);
+      font-weight: 700;
+      line-height: 1.02;
+      letter-spacing: -0.035em;
+      color: #84CCEF;
+    }
+
+    .hero-h1 span.accent {
+      color: #FFFFFF;
+    }
+
+    .hero-p {
+      font-size: clamp(0.88rem, 1.15vw, 1.25rem);
+      line-height: 1.35;
+      color: #84CCEF;
+      opacity: 0.92;
+      max-width: 94%;
+    }
+
+    /* Row 1, Col 3: Magenta / Plum */
     .tile-magenta {
       background-color: #FFADEB;
       color: #520037;
     }
 
-    /* Tile 4: Sky Cyan */
-    .tile-cyan {
-      background-color: #84CCEF;
-      color: #173537;
+    .tile-title {
+      font-size: clamp(1.15rem, 1.65vw, 2.1rem);
+      font-weight: 700;
+      line-height: 1.06;
+      letter-spacing: -0.025em;
+      margin-top: auto;
+      margin-bottom: clamp(6px, 0.8vh, 10px);
     }
 
-    /* Tile 5: Earthy Taupe / Warm Brown */
+    .tile-text {
+      font-size: clamp(0.76rem, 0.92vw, 1.05rem);
+      line-height: 1.32;
+      opacity: 0.92;
+    }
+
+    /* Row 1, Col 4: Transparent Window (Clouds peek through) */
+    .tile-window {
+      background: transparent;
+    }
+
+    /* Row 2, Col 1: Solid Deep Plum */
+    .tile-plum-solid {
+      background-color: #520037;
+    }
+
+    /* Row 2, Col 2: Earthy Taupe / Warm Yellow */
     .tile-taupe {
       background-color: #7C705A;
       color: #FFFFA8;
     }
 
-    /* Tile 7: Solid Bright Yellow */
+    /* Row 2, Col 3: Solid Warm Yellow */
     .tile-yellow-solid {
       background-color: #FFFE7D;
     }
 
-    /* Tile 8: Deep Petroleum & CTA */
-    .tile-petrol-cta {
-      background-color: #173537;
-      color: #84CCEF;
+    /* Row 2, Col 4: Sky Cyan with Direct CTA */
+    .tile-cyan-cta {
+      background-color: #84CCEF;
+      color: #173537;
     }
 
-    /* Tile Typography */
-    .tile-tag {
-      font-size: clamp(0.75rem, 0.9vw, 1.05rem);
-      font-weight: 700;
-      letter-spacing: -0.01em;
-    }
-
-    .tile-title {
-      font-size: clamp(1.35rem, 2.1vw, 2.85rem);
-      font-weight: 700;
-      line-height: 1.05;
-      letter-spacing: -0.03em;
-      margin-top: auto;
-      margin-bottom: 12px;
-    }
-
-    .tile-body {
-      font-size: clamp(0.85rem, 0.98vw, 1.15rem);
-      line-height: 1.4;
-      opacity: 0.92;
-    }
-
-    .tile-cta-button {
+    .cta-tile-btn {
       display: inline-flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
-      margin-top: 16px;
-      background-color: #84CCEF;
-      color: #173537;
+      width: 100%;
+      background-color: #173537;
+      color: #84CCEF;
       text-decoration: none;
-      padding: 14px 22px;
+      padding: clamp(10px, 1.2vh, 16px) clamp(14px, 1.4vw, 20px);
       font-weight: 700;
-      font-size: clamp(0.85rem, 1vw, 1.05rem);
+      font-size: clamp(0.82rem, 0.95vw, 1rem);
       border-radius: 0px;
-      transition: border-radius 0.3s ease, background-color 0.2s ease;
+      transition: border-radius 0.3s ease, background-color 0.2s ease, color 0.2s ease;
+      margin-top: clamp(8px, 1vh, 14px);
     }
 
-    .tile-cta-button:hover {
+    .cta-tile-btn:hover {
       border-radius: 20px;
-      background-color: #FFFFFF;
+      background-color: #000000;
+      color: #FFFFFF;
     }
 
-    /* Footer Section */
+    /* Footer */
     footer {
       width: 100%;
-      padding: 24px 0 12px 0;
+      height: clamp(24px, 3.5vh, 32px);
       display: flex;
-      flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
-      font-size: clamp(0.8rem, 0.9vw, 0.95rem);
-      color: rgba(25, 26, 28, 0.6);
-      border-top: 0.5px solid rgba(25, 26, 28, 0.15);
+      flex-shrink: 0;
+      font-size: clamp(0.74rem, 0.82vw, 0.88rem);
+      color: rgba(25, 26, 28, 0.55);
+      border-top: 0.5px solid rgba(25, 26, 28, 0.12);
+      padding-top: 6px;
     }
 
     footer a {
       color: #191A1C;
       text-decoration: none;
       font-weight: 500;
-      transition: opacity 0.2s ease;
     }
 
     footer a:hover {
-      opacity: 0.6;
+      text-decoration: underline;
     }
 
-    /* Responsive Breakpoints */
-    @media (max-width: 1024px) {
+    /* Mobile & Smaller Screens fallback (Smooth scroll if height is restricted) */
+    @media (max-width: 900px), (max-height: 600px) {
+      html, body {
+        height: auto;
+        min-height: 100dvh;
+        max-height: none;
+        overflow-y: auto;
+      }
+      .screen-canvas {
+        height: auto;
+        min-height: 100dvh;
+        gap: 16px;
+      }
+      .bento-stage {
+        min-height: auto;
+        flex: none;
+      }
       .bento-grid {
         grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: auto;
       }
-      .tile-transparent {
-        display: none; /* Hide empty windows on smaller screens to prioritize colorful cards */
+      .tile-hero-span {
+        grid-column: span 2;
+        min-height: 220px;
       }
-    }
-
-    @media (max-width: 640px) {
-      .bento-grid {
-        grid-template-columns: 1fr;
+      .tile {
+        min-height: 190px;
       }
-      .bento-tile {
-        aspect-ratio: auto;
-        min-height: 280px;
-      }
-      .hero-actions {
-        width: 100%;
-        flex-direction: column;
-        align-items: stretch;
-      }
-      .btn-primary, .btn-secondary {
-        justify-content: center;
+      .tile-window {
+        display: none;
       }
       footer {
         flex-direction: column;
         align-items: flex-start;
+        height: auto;
+        gap: 4px;
+        padding-bottom: 12px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .bento-grid {
+        grid-template-columns: 1fr;
+      }
+      .tile-hero-span {
+        grid-column: span 1;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- 1. Header (Framed with Prepress Hairline Crop Marks) -->
-  <div class="crop-frame">
-    <div class="crop-mark crop-tl-v"></div>
-    <div class="crop-mark crop-tl-h"></div>
-    <div class="crop-mark crop-tr-v"></div>
-    <div class="crop-mark crop-tr-h"></div>
-    <div class="crop-mark crop-bl-v"></div>
-    <div class="crop-mark crop-bl-h"></div>
-    <div class="crop-mark crop-br-v"></div>
-    <div class="crop-mark crop-br-h"></div>
+  <div class="screen-canvas">
+    
+    <!-- 1. Header (Framed with Crop Marks) -->
+    <header class="crop-frame">
+      <div class="crop-mark crop-tl-v"></div>
+      <div class="crop-mark crop-tl-h"></div>
+      <div class="crop-mark crop-tr-v"></div>
+      <div class="crop-mark crop-tr-h"></div>
+      <div class="crop-mark crop-bl-v"></div>
+      <div class="crop-mark crop-bl-h"></div>
+      <div class="crop-mark crop-br-v"></div>
+      <div class="crop-mark crop-br-h"></div>
 
-    <header>
       <a href="https://www.finali.ai" class="logo-link" aria-label="Finali AI">
         <!-- Exact Finali Logotype SVG -->
         <svg viewBox="0 0 81 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -407,147 +362,107 @@
         </svg>
       </a>
 
-      <div class="header-nav">
-        <span class="status-badge">Launching 2026</span>
-        <a href="mailto:joakim@paido.se?subject=Finali%20AI%20-%20Early%20Access" class="header-cta">
-          Get in touch
-        </a>
-      </div>
+      <a href="mailto:joakim@paido.se?subject=Finali%20AI%20Inquiry" class="header-cta">
+        <span>Contact joakim@paido.se</span>
+        <span>&rarr;</span>
+      </a>
     </header>
-  </div>
 
-  <!-- 2. Hero Headline Section (Framed with Crop Marks) -->
-  <div class="crop-frame">
-    <div class="crop-mark crop-tl-v"></div>
-    <div class="crop-mark crop-tl-h"></div>
-    <div class="crop-mark crop-tr-v"></div>
-    <div class="crop-mark crop-tr-h"></div>
-    <div class="crop-mark crop-bl-v"></div>
-    <div class="crop-mark crop-bl-h"></div>
-    <div class="crop-mark crop-br-v"></div>
-    <div class="crop-mark crop-br-h"></div>
+    <!-- 2. Bento Stage (Exact 100vh Fit, Tone-on-Tone Rectangles, Halftone Backdrop) -->
+    <main class="bento-stage crop-frame">
+      <div class="crop-mark crop-tl-v"></div>
+      <div class="crop-mark crop-tl-h"></div>
+      <div class="crop-mark crop-tr-v"></div>
+      <div class="crop-mark crop-tr-h"></div>
+      <div class="crop-mark crop-bl-v"></div>
+      <div class="crop-mark crop-bl-h"></div>
+      <div class="crop-mark crop-br-v"></div>
+      <div class="crop-mark crop-br-h"></div>
 
-    <section class="hero-section">
-      <h1>
-        Stop emailing spreadsheets.<br>
-        Run your media plans through Briefd<span class="badge-sub">(by finali)</span>
-      </h1>
+      <!-- Continuous Halftone Sky/Landscape Backdrop -->
+      <img src="./bento-bg.png" alt="Halftone backdrop" class="bento-backdrop">
 
-      <p class="hero-lead">
-        Static sheets and messy email chains cause version chaos and costly production errors. Briefd translates your media plans into clean, scale-accurate format cards shared via a single live link. Automated artwork generation powered by Finali AI.
-      </p>
-
-      <div class="hero-actions">
-        <a href="mailto:joakim@paido.se?subject=Finali%20AI%20-%20Early%20Access" class="btn-primary">
-          <span>Get early access</span>
-          <span>&rarr;</span>
-        </a>
-        <a href="#bento-overview" class="btn-secondary">
-          Explore the platform
-        </a>
-      </div>
-    </section>
-  </div>
-
-  <!-- 3. Bento Grid Section (Continuous Halftone Backdrop with Colored Rectangles) -->
-  <div id="bento-overview" class="crop-frame">
-    <div class="crop-mark crop-tl-v"></div>
-    <div class="crop-mark crop-tl-h"></div>
-    <div class="crop-mark crop-tr-v"></div>
-    <div class="crop-mark crop-tr-h"></div>
-    <div class="crop-mark crop-bl-v"></div>
-    <div class="crop-mark crop-bl-h"></div>
-    <div class="crop-mark crop-br-v"></div>
-    <div class="crop-mark crop-br-h"></div>
-
-    <section class="bento-wrapper">
-      <!-- Continuous Halftone Sky & Horizon Backdrop -->
-      <img src="./bento-bg.png" alt="Halftone backdrop" class="bento-bg-image">
-
-      <!-- 4x2 Responsive Bento Grid -->
       <div class="bento-grid">
-        <!-- Row 1 -->
-        <!-- Tile 1: Window to halftone clouds -->
-        <div class="bento-tile tile-transparent"></div>
+        
+        <!-- Row 1, Span 2: Hero Headline Card (Petroleum & Cyan Tone-on-Tone) -->
+        <div class="tile tile-hero-span">
+          <span class="tile-tag">Briefd &bull; Finali AI</span>
+          <h1 class="hero-h1">
+            Stop emailing spreadsheets.<br>
+            <span class="accent">Automate your media plans.</span>
+          </h1>
+          <p class="hero-p">
+            The missing layer between media planning and creative production. Translate chaotic rows into live, scale-accurate format cards and generate dozens of print-ready assets in seconds.
+          </p>
+        </div>
 
-        <!-- Tile 2: Solid Plum -->
-        <div class="bento-tile tile-plum-solid"></div>
-
-        <!-- Tile 3: Magenta / Pink -->
-        <div class="bento-tile tile-magenta">
-          <span class="tile-tag">01 / What we build</span>
+        <!-- Row 1, Col 3: Magenta & Plum Tone-on-Tone -->
+        <div class="tile tile-magenta">
+          <span class="tile-tag">01 / The Engine</span>
           <div>
-            <h2 class="tile-title">Automated production.</h2>
-            <p class="tile-body">
-              Briefd &amp; Finali bridge media planning and creative production. One ecosystem to align agencies, brands, and designers.
+            <h2 class="tile-title">Deterministic production.</h2>
+            <p class="tile-text">
+              Connect InDesign master files with your media plans. Output 80+ validated PDF/X and digital placements instantly.
             </p>
           </div>
         </div>
 
-        <!-- Tile 4: Sky Cyan -->
-        <div class="bento-tile tile-cyan">
-          <span class="tile-tag">02 / Briefd by Finali</span>
+        <!-- Row 1, Col 4: Transparent Window (Halftone Clouds peek through) -->
+        <div class="tile tile-window"></div>
+
+        <!-- Row 2, Col 1: Solid Deep Plum -->
+        <div class="tile tile-plum-solid"></div>
+
+        <!-- Row 2, Col 2: Earthy Taupe & Pale Yellow Tone-on-Tone -->
+        <div class="tile tile-taupe">
+          <span class="tile-tag">02 / Publisher Specs</span>
           <div>
-            <h2 class="tile-title">No more spreadsheet chaos.</h2>
-            <p class="tile-body">
-              Drop in your .xlsx plan. Every placement turns into a visual card with true aspect ratios, measurements, deadlines, and direct links to publisher specs.
+            <h2 class="tile-title">Nordic spec database.</h2>
+            <p class="tile-text">
+              Centralized, dagsaktuell technical requirements from Clear Channel, JCDecaux, Bonnier, Schibsted, and SDR.
             </p>
           </div>
         </div>
 
-        <!-- Row 2 -->
-        <!-- Tile 5: Earthy Taupe / Warm Brown -->
-        <div class="bento-tile tile-taupe">
-          <span class="tile-tag">03 / The Engine</span>
-          <div>
-            <h2 class="tile-title">Deterministic rendering.</h2>
-            <p class="tile-body">
-              Connect InDesign master files with your media plans. Generate 80+ print-ready, pre-flight validated PDF/X files in seconds.
-            </p>
-          </div>
-        </div>
+        <!-- Row 2, Col 3: Solid Warm Yellow -->
+        <div class="tile tile-yellow-solid"></div>
 
-        <!-- Tile 6: Window to horizon clouds -->
-        <div class="bento-tile tile-transparent"></div>
-
-        <!-- Tile 7: Solid Bright Warm Yellow -->
-        <div class="bento-tile tile-yellow-solid"></div>
-
-        <!-- Tile 8: Deep Petroleum & CTA Link -->
-        <div class="bento-tile tile-petrol-cta">
-          <span class="tile-tag">04 / Private Beta</span>
+        <!-- Row 2, Col 4: Cyan & Petroleum Tone-on-Tone with CTA -->
+        <div class="tile tile-cyan-cta">
+          <span class="tile-tag">03 / Early Access</span>
           <div>
             <h2 class="tile-title">Interested to learn more?</h2>
-            <p class="tile-body">
-              We are currently piloting with select Nordic agencies and enterprise creative departments.
+            <p class="tile-text">
+              Piloting with select agencies and brand teams. Let's talk.
             </p>
-            <a href="mailto:joakim@paido.se?subject=Finali%20AI%20-%20Early%20Access%20Inquiry" class="tile-cta-button">
-              <span>Contact Joakim &rarr;</span>
+            <a href="mailto:joakim@paido.se?subject=Finali%20AI%20-%20Early%20Access%20Inquiry" class="cta-tile-btn">
+              <span>Contact Joakim</span>
+              <span>&rarr;</span>
             </a>
           </div>
         </div>
+
       </div>
-    </section>
-  </div>
+    </main>
 
-  <!-- 4. Footer Section -->
-  <div class="crop-frame">
-    <div class="crop-mark crop-tl-v"></div>
-    <div class="crop-mark crop-tl-h"></div>
-    <div class="crop-mark crop-tr-v"></div>
-    <div class="crop-mark crop-tr-h"></div>
-    <div class="crop-mark crop-bl-v"></div>
-    <div class="crop-mark crop-bl-h"></div>
-    <div class="crop-mark crop-br-v"></div>
-    <div class="crop-mark crop-br-h"></div>
+    <!-- 3. Footer (Framed with Crop Marks) -->
+    <footer class="crop-frame">
+      <div class="crop-mark crop-tl-v"></div>
+      <div class="crop-mark crop-tl-h"></div>
+      <div class="crop-mark crop-tr-v"></div>
+      <div class="crop-mark crop-tr-h"></div>
+      <div class="crop-mark crop-bl-v"></div>
+      <div class="crop-mark crop-bl-h"></div>
+      <div class="crop-mark crop-br-v"></div>
+      <div class="crop-mark crop-br-h"></div>
 
-    <footer>
       <div>Briefd &amp; Finali AI &bull; Stockholm, Sweden</div>
-      <div>ALG 20 Compliant &bull; Deterministic Production Engine</div>
+      <div>ALG 20 Compliant Prepress Engine</div>
       <div>
-        Direct contact: <a href="mailto:joakim@paido.se">joakim@paido.se</a>
+        Direct: <a href="mailto:joakim@paido.se">joakim@paido.se</a>
       </div>
     </footer>
+
   </div>
 
 </body>
