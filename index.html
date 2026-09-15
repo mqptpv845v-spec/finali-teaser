@@ -41,14 +41,14 @@
       -moz-osx-font-smoothing: grayscale;
     }
 
-    /* Screen Canvas (Exact 100vw & 100vh Shell) */
+    /* Screen Canvas Shell */
     .screen-canvas {
-      width: 100%;
-      height: 100%;
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: clamp(20px, 2.5vw, 36px) clamp(20px, 3vw, 44px) 0 clamp(20px, 3vw, 44px);
       position: relative;
     }
 
@@ -61,26 +61,26 @@
     }
 
     /* Top Corner Marks */
-    .crop-tl-v { top: 12px; left: 24px; width: 0.5px; height: 14px; }
-    .crop-tl-h { top: 24px; left: 12px; width: 14px; height: 0.5px; }
+    .crop-tl-v { top: 8px; left: 24px; width: 0.5px; height: 14px; }
+    .crop-tl-h { top: 22px; left: 10px; width: 14px; height: 0.5px; }
 
-    .crop-tr-v { top: 12px; right: 24px; width: 0.5px; height: 14px; }
-    .crop-tr-h { top: 24px; right: 12px; width: 14px; height: 0.5px; }
+    .crop-tr-v { top: 8px; right: 24px; width: 0.5px; height: 14px; }
+    .crop-tr-h { top: 22px; right: 10px; width: 14px; height: 0.5px; }
 
     /* Bottom Corner Marks */
-    .crop-bl-v { bottom: 12px; left: 24px; width: 0.5px; height: 14px; }
-    .crop-bl-h { bottom: 24px; left: 12px; width: 14px; height: 0.5px; }
+    .crop-bl-v { bottom: 8px; left: 24px; width: 0.5px; height: 14px; }
+    .crop-bl-h { bottom: 22px; left: 10px; width: 14px; height: 0.5px; }
 
-    .crop-br-v { bottom: 12px; right: 24px; width: 0.5px; height: 14px; }
-    .crop-br-h { bottom: 24px; right: 12px; width: 14px; height: 0.5px; }
+    .crop-br-v { bottom: 8px; right: 24px; width: 0.5px; height: 14px; }
+    .crop-br-h { bottom: 22px; right: 10px; width: 14px; height: 0.5px; }
 
-    /* Header */
+    /* Header (Static Top) */
     header {
       width: 100%;
-      height: clamp(40px, 5vh, 52px);
       display: flex;
       align-items: center;
       justify-content: space-between;
+      padding: clamp(20px, 2.5vw, 32px) clamp(28px, 3.5vw, 48px) 0 clamp(28px, 3.5vw, 48px);
       flex-shrink: 0;
       position: relative;
       z-index: 40;
@@ -94,7 +94,7 @@
     }
 
     .logo-link svg {
-      height: clamp(26px, 3vh, 34px);
+      height: clamp(24px, 2.8vh, 32px);
       width: auto;
       display: block;
     }
@@ -103,12 +103,12 @@
       background-color: #000000;
       color: #FFFFFF;
       text-decoration: none;
-      padding: clamp(10px, 1.2vh, 14px) clamp(18px, 1.8vw, 28px);
+      padding: clamp(10px, 1.2vh, 14px) clamp(20px, 2vw, 30px);
       font-weight: 600;
       font-size: clamp(0.85rem, 0.95vw, 1.05rem);
       letter-spacing: -0.01em;
       border-radius: 0px;
-      transition: border-radius 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease, opacity 0.2s ease;
+      transition: border-radius 0.35s ease, background-color 0.2s ease;
       display: inline-flex;
       align-items: center;
       white-space: nowrap;
@@ -116,70 +116,68 @@
     }
 
     .cta-btn:hover {
-      border-radius: 22px;
+      border-radius: 20px;
       background-color: #1a1a1a;
     }
 
-    /* Hero Section (Center Stage) */
-    .hero-content {
-      flex: 1;
-      min-height: 0;
+    /* Main Content: Anchored statically to the TOP (matching Frame 16) */
+    .top-content {
+      width: 100%;
+      padding: clamp(28px, 4vh, 52px) clamp(28px, 3.5vw, 48px) 0 clamp(28px, 3.5vw, 48px);
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      padding: clamp(10px, 2vh, 30px) 0;
-      max-width: 1280px;
+      align-items: flex-start;
+      max-width: 1400px;
+      margin-bottom: auto; /* Pushes the bottom bar down while keeping text firmly up */
     }
 
     h1 {
-      font-size: clamp(2.8rem, 5.6vw, 6.2rem);
+      font-size: clamp(3rem, 6.2vw, 7rem);
       font-weight: 700;
-      line-height: 1.02;
-      letter-spacing: -0.035em;
+      line-height: 0.98;
+      letter-spacing: -0.04em;
       color: #000000;
-      margin-bottom: clamp(16px, 2.2vh, 28px);
-      max-width: 1100px;
+      margin-bottom: clamp(18px, 2.5vh, 32px);
+      max-width: 1180px;
     }
 
     .hero-text {
-      font-size: clamp(1.1rem, 1.6vw, 1.85rem);
+      font-size: clamp(1.15rem, 1.65vw, 1.85rem);
       font-weight: 400;
-      line-height: 1.34;
-      letter-spacing: -0.015em;
+      line-height: 1.32;
+      letter-spacing: -0.018em;
       color: #191A1C;
-      max-width: 920px;
+      max-width: 960px;
     }
 
     /* Bottom Interactive Color Cards Bar */
     .bottom-cards-bar {
-      width: 100%;
+      width: 100vw;
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       align-items: end;
       position: relative;
       z-index: 30;
-      margin-left: calc(-1 * clamp(20px, 3vw, 44px));
-      margin-right: calc(-1 * clamp(20px, 3vw, 44px));
-      width: calc(100% + (2 * clamp(20px, 3vw, 44px)));
+      margin-top: auto;
     }
 
     .color-card {
       position: relative;
-      height: clamp(34px, 4.5vh, 48px);
-      padding: clamp(14px, 1.8vw, 24px);
+      height: clamp(36px, 4.5vh, 48px);
+      padding: clamp(16px, 2vw, 28px);
       display: flex;
       flex-direction: column;
-      justify-content: flex-start;
+      justify-content: space-between;
       overflow: hidden;
       cursor: pointer;
       transition: height 0.45s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
     }
 
-    /* Hover Expansion (Slides up to reveal full content) */
+    /* Hover Expansion: Smoothly slides upward revealing the full card content */
     .color-card:hover,
     .color-card:focus-within {
-      height: clamp(260px, 35vh, 400px);
-      box-shadow: 0 -12px 36px rgba(0, 0, 0, 0.1);
+      height: clamp(270px, 36vh, 420px);
+      box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.08);
       z-index: 35;
     }
 
@@ -196,41 +194,39 @@
       color: #520037;
     }
 
-    /* 3. Bright Pale Yellow */
+    /* 3. Bright Pale Yellow (Exact match to Frame 16) */
     .card-yellow {
       background-color: #FFFFA8;
       color: #7C705A;
     }
 
-    /* 4. Solid Black / Petroleum */
+    /* 4. Solid Black */
     .card-dark {
       background-color: #000000;
       color: #FFFFFF;
     }
 
     /* Card Content Typography */
-    .card-header {
+    .card-title {
       font-size: clamp(0.95rem, 1.15vw, 1.35rem);
       font-weight: 700;
       letter-spacing: -0.02em;
-      margin-bottom: clamp(12px, 1.6vh, 20px);
-      white-space: nowrap;
       display: flex;
       align-items: center;
       justify-content: space-between;
       width: 100%;
     }
 
-    .card-text {
+    .card-desc {
       font-size: clamp(0.85rem, 1.05vw, 1.2rem);
       line-height: 1.38;
       font-weight: 400;
       letter-spacing: -0.01em;
       opacity: 0.95;
-      transition: opacity 0.3s ease;
+      margin-top: auto;
     }
 
-    .card-dark .card-text {
+    .card-dark .card-desc {
       opacity: 0.85;
     }
 
@@ -245,10 +241,9 @@
       .screen-canvas {
         height: auto;
         min-height: 100dvh;
-        padding-bottom: 0;
       }
-      .hero-content {
-        padding: 36px 0;
+      .top-content {
+        padding: 32px 24px 48px 24px;
       }
       .bottom-cards-bar {
         grid-template-columns: 1fr;
@@ -268,7 +263,7 @@
   <!-- Screen Canvas Shell -->
   <div class="screen-canvas">
 
-    <!-- Prepress Corner Hairline Crop Marks -->
+    <!-- Prepress Corner Hairline Crop Marks (Top & Bottom) -->
     <div class="crop-mark crop-tl-v"></div>
     <div class="crop-mark crop-tl-h"></div>
     <div class="crop-mark crop-tr-v"></div>
@@ -278,7 +273,7 @@
     <div class="crop-mark crop-br-v"></div>
     <div class="crop-mark crop-br-h"></div>
 
-    <!-- 1. Header with Finali Logotype and CTA Button -->
+    <!-- 1. Header -->
     <header>
       <a href="https://www.finali.ai" class="logo-link" aria-label="Finali">
         <!-- Official Finali SVG Logotype -->
@@ -297,57 +292,59 @@
       </a>
     </header>
 
-    <!-- 2. Hero Content -->
-    <main class="hero-content">
-      <h1>Accelerating the transition from plan to press.</h1>
+    <!-- 2. Hero Content: Static Top Alignment (Matching Frame 16) -->
+    <main class="top-content">
+      <h1>
+        Accelerating the transition<br>from plan to press.
+      </h1>
       <p class="hero-text">
         We close the gap between media strategy and technical delivery. Our platform translates fragmented campaign data into an autonomous production engine, giving brands and agencies the power to visualize specs and generate flawless multi-format output instantly.
       </p>
     </main>
 
-    <!-- 3. Bottom Interactive Color Cards Bar (Hover to Expand) -->
+    <!-- 3. Bottom Interactive Color Cards Bar (Full Width, Hover to Expand) -->
     <section class="bottom-cards-bar" aria-label="Explore more information">
       
       <!-- Cyan Card -->
       <article class="color-card card-cyan" tabindex="0">
-        <div class="card-header">
+        <div class="card-title">
           <span>Briefd</span>
           <span>&uarr;</span>
         </div>
-        <p class="card-text">
+        <p class="card-desc">
           A focused visual workspace that translates static spreadsheets into interactive, scale-accurate format cards shared via a single live link.
         </p>
       </article>
 
       <!-- Pink Card -->
       <article class="color-card card-pink" tabindex="0">
-        <div class="card-header">
+        <div class="card-title">
           <span>Automated Engine</span>
           <span>&uarr;</span>
         </div>
-        <p class="card-text">
+        <p class="card-desc">
           Deterministic rendering connects approved InDesign masters with live campaign data to output 80+ print-ready PDF/X files in seconds.
         </p>
       </article>
 
-      <!-- Yellow Card (Matching Figma Frame 16) -->
+      <!-- Yellow Card (Exact Match to Figma Frame 16) -->
       <article class="color-card card-yellow" tabindex="0">
-        <div class="card-header">
-          <span>Who We Are</span>
+        <div class="card-title">
+          <span>Lorem Ipsum</span>
           <span>&uarr;</span>
         </div>
-        <p class="card-text">
+        <p class="card-desc">
           Designers and technologists who spent years inside agencies. We know the quiet dread of receiving a 47-row spreadsheet on a Friday afternoon and being expected to deliver production-ready artwork across thirty placements by Monday morning.
         </p>
       </article>
 
       <!-- Dark Card -->
       <article class="color-card card-dark" tabindex="0">
-        <div class="card-header">
+        <div class="card-title">
           <span>Publisher Specs</span>
           <span>&uarr;</span>
         </div>
-        <p class="card-text">
+        <p class="card-desc">
           Centralized pre-flight rules and verified delivery specifications for major Nordic media houses, distributörer, and out-of-home networks.
         </p>
       </article>
