@@ -41,7 +41,7 @@
       -moz-osx-font-smoothing: grayscale;
     }
 
-    /* Screen Canvas Shell */
+    /* Screen Canvas Shell (100vw & 100vh) */
     .screen-canvas {
       width: 100vw;
       height: 100vh;
@@ -49,10 +49,20 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      padding: clamp(20px, 2.5vw, 32px) clamp(24px, 3.5vw, 48px) 0 clamp(24px, 3.5vw, 48px);
       position: relative;
     }
 
-    /* Authentic Prepress Hairline Crop Marks (0.5px hairline, 14px length, 4px corner gap) */
+    /* ==========================================================================
+       Crop Marks (Authentic Prepress Hairline framing the Menu Header)
+       0.5px hairline, 12px length, 4px corner gap, exactly as on Briefd & Finali
+       ========================================================================== */
+    .header-crop-frame {
+      position: relative;
+      width: 100%;
+      flex-shrink: 0;
+    }
+
     .crop-mark {
       position: absolute;
       background-color: #000000;
@@ -60,30 +70,30 @@
       z-index: 50;
     }
 
-    /* Top Corner Marks */
-    .crop-tl-v { top: 8px; left: 24px; width: 0.5px; height: 14px; }
-    .crop-tl-h { top: 22px; left: 10px; width: 14px; height: 0.5px; }
+    /* Top Left of Header */
+    .crop-tl-v { top: -16px; left: 0; width: 0.5px; height: 12px; }
+    .crop-tl-h { top: 0; left: -16px; width: 12px; height: 0.5px; }
 
-    .crop-tr-v { top: 8px; right: 24px; width: 0.5px; height: 14px; }
-    .crop-tr-h { top: 22px; right: 10px; width: 14px; height: 0.5px; }
+    /* Top Right of Header */
+    .crop-tr-v { top: -16px; right: 0; width: 0.5px; height: 12px; }
+    .crop-tr-h { top: 0; right: -16px; width: 12px; height: 0.5px; }
 
-    /* Bottom Corner Marks */
-    .crop-bl-v { bottom: 8px; left: 24px; width: 0.5px; height: 14px; }
-    .crop-bl-h { bottom: 22px; left: 10px; width: 14px; height: 0.5px; }
+    /* Bottom Left of Header */
+    .crop-bl-v { bottom: -16px; left: 0; width: 0.5px; height: 12px; }
+    .crop-bl-h { bottom: 0; left: -16px; width: 12px; height: 0.5px; }
 
-    .crop-br-v { bottom: 8px; right: 24px; width: 0.5px; height: 14px; }
-    .crop-br-h { bottom: 22px; right: 10px; width: 14px; height: 0.5px; }
+    /* Bottom Right of Header */
+    .crop-br-v { bottom: -16px; right: 0; width: 0.5px; height: 12px; }
+    .crop-br-h { bottom: 0; right: -16px; width: 12px; height: 0.5px; }
 
-    /* Header (Static Top) */
+    /* Header Bar */
     header {
       width: 100%;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: clamp(20px, 2.5vw, 32px) clamp(28px, 3.5vw, 48px) 0 clamp(28px, 3.5vw, 48px);
-      flex-shrink: 0;
-      position: relative;
-      z-index: 40;
+      padding: clamp(8px, 1.2vh, 16px) 0;
+      background: #FFFFFF;
     }
 
     .logo-link {
@@ -94,7 +104,7 @@
     }
 
     .logo-link svg {
-      height: clamp(24px, 2.8vh, 32px);
+      height: clamp(26px, 3vh, 36px);
       width: auto;
       display: block;
     }
@@ -103,12 +113,12 @@
       background-color: #000000;
       color: #FFFFFF;
       text-decoration: none;
-      padding: clamp(10px, 1.2vh, 14px) clamp(20px, 2vw, 30px);
+      padding: clamp(10px, 1.3vh, 14px) clamp(22px, 2.2vw, 32px);
       font-weight: 600;
       font-size: clamp(0.85rem, 0.95vw, 1.05rem);
       letter-spacing: -0.01em;
       border-radius: 0px;
-      transition: border-radius 0.35s ease, background-color 0.2s ease;
+      transition: border-radius 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease;
       display: inline-flex;
       align-items: center;
       white-space: nowrap;
@@ -120,39 +130,44 @@
       background-color: #1a1a1a;
     }
 
-    /* Main Content: Anchored statically to the TOP (matching Frame 16) */
+    /* Main Content: Full Width Hero Container */
     .top-content {
       width: 100%;
-      padding: clamp(28px, 4vh, 52px) clamp(28px, 3.5vw, 48px) 0 clamp(28px, 3.5vw, 48px);
+      max-width: 100%;
+      padding: clamp(24px, 4vh, 52px) 0 0 0;
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      max-width: 1400px;
-      margin-bottom: auto; /* Pushes the bottom bar down while keeping text firmly up */
+      margin-bottom: auto; /* Keeps text firmly anchored up while bottom sits at base */
     }
 
+    /* Massive Fluid Headline */
     h1 {
-      font-size: clamp(3rem, 6.2vw, 7rem);
+      font-size: clamp(3.5rem, 6.8vw, 8.5rem);
       font-weight: 700;
-      line-height: 0.98;
+      line-height: 0.97;
       letter-spacing: -0.04em;
       color: #000000;
-      margin-bottom: clamp(18px, 2.5vh, 32px);
-      max-width: 1180px;
+      margin-bottom: clamp(20px, 2.8vh, 38px);
+      width: 100%;
+      max-width: 100%;
     }
 
+    /* Subhead / Lead Ingress */
     .hero-text {
-      font-size: clamp(1.15rem, 1.65vw, 1.85rem);
+      font-size: clamp(1.2rem, 1.8vw, 2.25rem);
       font-weight: 400;
       line-height: 1.32;
       letter-spacing: -0.018em;
       color: #191A1C;
-      max-width: 960px;
+      max-width: clamp(700px, 75vw, 1280px);
     }
 
-    /* Bottom Interactive Color Cards Bar */
+    /* Bottom Interactive Color Cards Bar (Full 100vw, No Crop Marks Here) */
     .bottom-cards-bar {
-      width: 100vw;
+      width: calc(100% + (2 * clamp(24px, 3.5vw, 48px)));
+      margin-left: calc(-1 * clamp(24px, 3.5vw, 48px));
+      margin-right: calc(-1 * clamp(24px, 3.5vw, 48px));
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       align-items: end;
@@ -163,7 +178,7 @@
 
     .color-card {
       position: relative;
-      height: clamp(36px, 4.5vh, 48px);
+      height: clamp(36px, 4.5vh, 52px);
       padding: clamp(16px, 2vw, 28px);
       display: flex;
       flex-direction: column;
@@ -176,8 +191,8 @@
     /* Hover Expansion: Smoothly slides upward revealing the full card content */
     .color-card:hover,
     .color-card:focus-within {
-      height: clamp(270px, 36vh, 420px);
-      box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.08);
+      height: clamp(280px, 38vh, 430px);
+      box-shadow: 0 -14px 44px rgba(0, 0, 0, 0.08);
       z-index: 35;
     }
 
@@ -208,7 +223,7 @@
 
     /* Card Content Typography */
     .card-title {
-      font-size: clamp(0.95rem, 1.15vw, 1.35rem);
+      font-size: clamp(0.95rem, 1.2vw, 1.45rem);
       font-weight: 700;
       letter-spacing: -0.02em;
       display: flex;
@@ -218,7 +233,7 @@
     }
 
     .card-desc {
-      font-size: clamp(0.85rem, 1.05vw, 1.2rem);
+      font-size: clamp(0.85rem, 1.1vw, 1.25rem);
       line-height: 1.38;
       font-weight: 400;
       letter-spacing: -0.01em;
@@ -243,14 +258,17 @@
         min-height: 100dvh;
       }
       .top-content {
-        padding: 32px 24px 48px 24px;
+        padding: 32px 0 48px 0;
       }
       .bottom-cards-bar {
         grid-template-columns: 1fr;
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
       }
       .color-card {
         height: auto !important;
-        min-height: 160px;
+        min-height: 170px;
       }
       .crop-mark {
         display: none;
@@ -260,39 +278,41 @@
 </head>
 <body>
 
-  <!-- Screen Canvas Shell -->
+  <!-- Screen Canvas Shell (100vw & 100vh) -->
   <div class="screen-canvas">
 
-    <!-- Prepress Corner Hairline Crop Marks (Top & Bottom) -->
-    <div class="crop-mark crop-tl-v"></div>
-    <div class="crop-mark crop-tl-h"></div>
-    <div class="crop-mark crop-tr-v"></div>
-    <div class="crop-mark crop-tr-h"></div>
-    <div class="crop-mark crop-bl-v"></div>
-    <div class="crop-mark crop-bl-h"></div>
-    <div class="crop-mark crop-br-v"></div>
-    <div class="crop-mark crop-br-h"></div>
+    <!-- 1. Menu Header with Prepress Hairline Crop Marks framing it -->
+    <div class="header-crop-frame">
+      <!-- Crop Marks on the 4 Corners of the Menu Header -->
+      <div class="crop-mark crop-tl-v"></div>
+      <div class="crop-mark crop-tl-h"></div>
+      <div class="crop-mark crop-tr-v"></div>
+      <div class="crop-mark crop-tr-h"></div>
+      <div class="crop-mark crop-bl-v"></div>
+      <div class="crop-mark crop-bl-h"></div>
+      <div class="crop-mark crop-br-v"></div>
+      <div class="crop-mark crop-br-h"></div>
 
-    <!-- 1. Header -->
-    <header>
-      <a href="https://www.finali.ai" class="logo-link" aria-label="Finali">
-        <!-- Official Finali SVG Logotype -->
-        <svg viewBox="0 0 81 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M75.4688 9.39263H79.0371V31.131H75.4688V9.39263ZM80.0215 2.78908C80.0215 4.42971 78.791 5.57816 77.2734 5.57816C75.7559 5.57816 74.5254 4.42971 74.5254 2.78908C74.5254 1.14845 75.7559 0 77.2734 0C78.791 0 80.0215 1.14845 80.0215 2.78908Z" fill="currentColor"/>
-          <path d="M67.957 0.287231H71.5254V31.1312H67.957V0.287231Z" fill="currentColor"/>
-          <path d="M64.422 9.39258V31.131H60.8536V27.6857H60.7716C59.4181 29.9415 56.67 31.7052 53.1426 31.7052C47.4004 31.7052 42.5195 26.9884 42.5195 20.2618C42.5195 13.5352 47.4004 8.81836 53.1426 8.81836C56.67 8.81836 59.4181 10.582 60.7716 12.8379H60.8536V9.39258H64.422ZM53.5938 28.3009C57.8595 28.3009 60.9767 24.8556 60.9767 20.2618C60.9767 15.668 57.8595 12.2227 53.5938 12.2227C49.3282 12.2227 46.211 15.668 46.211 20.2618C46.211 24.8556 49.3282 28.3009 53.5938 28.3009Z" fill="currentColor"/>
-          <path d="M22.9531 9.39258H26.4395V12.1817H26.5215C27.3828 10.3359 29.3926 8.81836 32.6739 8.81836C37.5548 8.81836 40.3849 12.2227 40.3849 17.1446V31.131H36.8165V17.9649C36.8165 14.2325 34.9708 12.0996 31.8946 12.0996C28.6133 12.0996 26.5215 14.6836 26.5215 18.293V31.131H22.9531V9.39258Z" fill="currentColor"/>
-          <path d="M15.4375 9.39263H19.0059V31.131H15.4375V9.39263ZM19.9903 2.78908C19.9903 4.42971 18.7598 5.57816 17.2422 5.57816C15.7246 5.57816 14.4941 4.42971 14.4941 2.78908C14.4941 1.14845 15.7246 0 17.2422 0C18.7598 0 19.9903 1.14845 19.9903 2.78908Z" fill="currentColor"/>
-          <path d="M4.10158 6.19351C4.10158 2.58412 6.35746 0.287231 9.92583 0.287231H12.1817V3.48647H10.9512C8.65434 3.48647 7.66996 4.3478 7.66996 6.80875V9.39275H12.1817V12.674H7.66996V31.1312H4.10158V12.674H0V9.39275H4.10158V6.19351Z" fill="currentColor"/>
-        </svg>
-      </a>
+      <header>
+        <a href="https://www.finali.ai" class="logo-link" aria-label="Finali">
+          <!-- Official Finali SVG Logotype -->
+          <svg viewBox="0 0 81 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M75.4688 9.39263H79.0371V31.131H75.4688V9.39263ZM80.0215 2.78908C80.0215 4.42971 78.791 5.57816 77.2734 5.57816C75.7559 5.57816 74.5254 4.42971 74.5254 2.78908C74.5254 1.14845 75.7559 0 77.2734 0C78.791 0 80.0215 1.14845 80.0215 2.78908Z" fill="currentColor"/>
+            <path d="M67.957 0.287231H71.5254V31.1312H67.957V0.287231Z" fill="currentColor"/>
+            <path d="M64.422 9.39258V31.131H60.8536V27.6857H60.7716C59.4181 29.9415 56.67 31.7052 53.1426 31.7052C47.4004 31.7052 42.5195 26.9884 42.5195 20.2618C42.5195 13.5352 47.4004 8.81836 53.1426 8.81836C56.67 8.81836 59.4181 10.582 60.7716 12.8379H60.8536V9.39258H64.422ZM53.5938 28.3009C57.8595 28.3009 60.9767 24.8556 60.9767 20.2618C60.9767 15.668 57.8595 12.2227 53.5938 12.2227C49.3282 12.2227 46.211 15.668 46.211 20.2618C46.211 24.8556 49.3282 28.3009 53.5938 28.3009Z" fill="currentColor"/>
+            <path d="M22.9531 9.39258H26.4395V12.1817H26.5215C27.3828 10.3359 29.3926 8.81836 32.6739 8.81836C37.5548 8.81836 40.3849 12.2227 40.3849 17.1446V31.131H36.8165V17.9649C36.8165 14.2325 34.9708 12.0996 31.8946 12.0996C28.6133 12.0996 26.5215 14.6836 26.5215 18.293V31.131H22.9531V9.39258Z" fill="currentColor"/>
+            <path d="M15.4375 9.39263H19.0059V31.131H15.4375V9.39263ZM19.9903 2.78908C19.9903 4.42971 18.7598 5.57816 17.2422 5.57816C15.7246 5.57816 14.4941 4.42971 14.4941 2.78908C14.4941 1.14845 15.7246 0 17.2422 0C18.7598 0 19.9903 1.14845 19.9903 2.78908Z" fill="currentColor"/>
+            <path d="M4.10158 6.19351C4.10158 2.58412 6.35746 0.287231 9.92583 0.287231H12.1817V3.48647H10.9512C8.65434 3.48647 7.66996 4.3478 7.66996 6.80875V9.39275H12.1817V12.674H7.66996V31.1312H4.10158V12.674H0V9.39275H4.10158V6.19351Z" fill="currentColor"/>
+          </svg>
+        </a>
 
-      <a href="mailto:joakim@paido.se?subject=Finali%20-%20Contact%20for%20more%20information" class="cta-btn">
-        Contact for more information
-      </a>
-    </header>
+        <a href="mailto:joakim@paido.se?subject=Finali%20-%20Want%20to%20know%20more%3F" class="cta-btn">
+          Want to know more?
+        </a>
+      </header>
+    </div>
 
-    <!-- 2. Hero Content: Static Top Alignment (Matching Frame 16) -->
+    <!-- 2. Hero Content: Full Width Container & Massive Fluid Typography -->
     <main class="top-content">
       <h1>
         Accelerating the transition<br>from plan to press.
@@ -302,7 +322,7 @@
       </p>
     </main>
 
-    <!-- 3. Bottom Interactive Color Cards Bar (Full Width, Hover to Expand) -->
+    <!-- 3. Bottom Interactive Color Cards Bar (Full 100vw Edge-to-Edge, No Crop Marks) -->
     <section class="bottom-cards-bar" aria-label="Explore more information">
       
       <!-- Cyan Card -->
