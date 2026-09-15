@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Finali AI — Från medieplan till färdiga kampanjformat</title>
+  <meta name="description" content="Det saknade lagret mellan medieplanering och kreativ produktion. Automatisera dina kampanjformat med Finali AI och Briefd.">
+  
+  <!-- Open Graph / Meta -->
+  <meta property="og:title" content="Finali AI — Från medieplan till färdiga kampanjformat">
+  <meta property="og:description" content="Det saknade lagret mellan medieplanering och kreativ produktion.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.finali.ai">
+
+  <!-- Favicon (Inlined SVG) -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23191A1C'/%3E%3Cpath d='M8 8h16v3H8zm0 6h11v3H8zm0 6h14v3H8z' fill='%23ffffff'/%3E%3C/svg%3E">
+
+  <!-- Google Fonts: Instrument Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* Reset & Base */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      min-height: 100vh;
+      min-height: 100dvh;
+      overflow-x: hidden;
+      background-color: #FAF9F6;
+      color: #191A1C;
+      font-family: 'Instrument Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Outer Viewport Wrapper (100vw & 100dvh) */
+    .viewport {
+      width: 100%;
+      height: 100%;
+      min-height: 100dvh;
+      padding: clamp(20px, 3.5vw, 48px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+    }
+
+    /* Authentic Prepress Crop Marks (Hairline 0.5px, 12px length, 4px corner gap) */
+    .crop-mark {
+      position: absolute;
+      background-color: #191A1C;
+      pointer-events: none;
+    }
+
+    /* Top-Left */
+    .crop-tl-v { top: -16px; left: 0; width: 0.5px; height: 12px; }
+    .crop-tl-h { top: 0; left: -16px; width: 12px; height: 0.5px; }
+
+    /* Top-Right */
+    .crop-tr-v { top: -16px; right: 0; width: 0.5px; height: 12px; }
+    .crop-tr-h { top: 0; right: -16px; width: 12px; height: 0.5px; }
+
+    /* Bottom-Left */
+    .crop-bl-v { bottom: -16px; left: 0; width: 0.5px; height: 12px; }
+    .crop-bl-h { bottom: 0; left: -16px; width: 12px; height: 0.5px; }
+
+    /* Bottom-Right */
+    .crop-br-v { bottom: -16px; right: 0; width: 0.5px; height: 12px; }
+    .crop-br-h { bottom: 0; right: -16px; width: 12px; height: 0.5px; }
+
+    /* Header */
+    header {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 24px;
+    }
+
+    .logo-link {
+      display: inline-flex;
+      align-items: center;
+      text-decoration: none;
+      color: #191A1C;
+    }
+
+    .logo-link svg {
+      height: clamp(22px, 2.5vw, 28px);
+      width: auto;
+      display: block;
+    }
+
+    .status-tag {
+      font-size: clamp(0.75rem, 0.85vw, 0.95rem);
+      font-weight: 500;
+      color: rgba(25, 26, 28, 0.6);
+      letter-spacing: -0.01em;
+    }
+
+    /* Main Hero Frame */
+    .hero-container {
+      position: relative;
+      background-color: #FFFFFF;
+      border: 0.5px solid rgba(25, 26, 28, 0.12);
+      padding: clamp(28px, 5vw, 64px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      max-width: 1080px;
+      width: 100%;
+      margin: auto 0;
+    }
+
+    /* Typography */
+    h1 {
+      font-size: clamp(2.4rem, 5.2vw, 4.8rem);
+      font-weight: 700;
+      line-height: 1.04;
+      letter-spacing: -0.03em;
+      color: #191A1C;
+      margin-bottom: clamp(16px, 2.2vw, 28px);
+      max-width: 950px;
+    }
+
+    .lead {
+      font-size: clamp(1.1rem, 1.6vw, 1.45rem);
+      font-weight: 400;
+      line-height: 1.5;
+      color: rgba(25, 26, 28, 0.82);
+      max-width: 780px;
+      margin-bottom: clamp(28px, 3.5vw, 44px);
+    }
+
+    .lead strong {
+      font-weight: 600;
+      color: #191A1C;
+    }
+
+    /* CTA Button (Natural transition: straight to rounded) */
+    .cta-group {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background-color: #191A1C;
+      color: #FFFFFF;
+      font-size: clamp(0.95rem, 1.1vw, 1.05rem);
+      font-weight: 600;
+      text-decoration: none;
+      padding: 16px 32px;
+      border-radius: 0px;
+      transition: border-radius 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.25s ease;
+      cursor: pointer;
+    }
+
+    .cta-button:hover {
+      border-radius: 24px;
+      background-color: #000000;
+    }
+
+    .cta-button svg {
+      width: 18px;
+      height: 18px;
+      transition: transform 0.25s ease;
+    }
+
+    .cta-button:hover svg {
+      transform: translateX(4px);
+    }
+
+    .cta-subtext {
+      font-size: 0.9rem;
+      color: rgba(25, 26, 28, 0.55);
+    }
+
+    .cta-subtext a {
+      color: #191A1C;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    /* Footer */
+    footer {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 24px;
+      font-size: clamp(0.75rem, 0.85vw, 0.9rem);
+      color: rgba(25, 26, 28, 0.5);
+    }
+
+    footer a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    footer a:hover {
+      color: #191A1C;
+    }
+
+    /* Mobile adjustments */
+    @media (max-width: 640px) {
+      html, body {
+        height: auto;
+        min-height: 100dvh;
+      }
+      .viewport {
+        min-height: 100dvh;
+        gap: 24px;
+      }
+      .hero-container {
+        margin: 12px 0;
+      }
+      footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="viewport">
+    <!-- Header -->
+    <header>
+      <a href="https://www.finali.ai" class="logo-link" aria-label="Finali AI">
+        <!-- Inlined Finali Logotype SVG -->
+        <svg viewBox="0 0 81 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M75.4688 9.39263H79.0371V31.131H75.4688V9.39263ZM80.0215 2.78908C80.0215 4.42971 78.791 5.57816 77.2734 5.57816C75.7559 5.57816 74.5254 4.42971 74.5254 2.78908C74.5254 1.14845 75.7559 0 77.2734 0C78.791 0 80.0215 1.14845 80.0215 2.78908Z" fill="currentColor"/>
+          <path d="M67.957 0.287231H71.5254V31.1312H67.957V0.287231Z" fill="currentColor"/>
+          <path d="M64.422 9.39258V31.131H60.8536V27.6857H60.7716C59.4181 29.9415 56.67 31.7052 53.1426 31.7052C47.4004 31.7052 42.5195 26.9884 42.5195 20.2618C42.5195 13.5352 47.4004 8.81836 53.1426 8.81836C56.67 8.81836 59.4181 10.582 60.7716 12.8379H60.8536V9.39258H64.422ZM53.5938 28.3009C57.8595 28.3009 60.9767 24.8556 60.9767 20.2618C60.9767 15.668 57.8595 12.2227 53.5938 12.2227C49.3282 12.2227 46.211 15.668 46.211 20.2618C46.211 24.8556 49.3282 28.3009 53.5938 28.3009Z" fill="currentColor"/>
+          <path d="M22.9531 9.39258H26.4395V12.1817H26.5215C27.3828 10.3359 29.3926 8.81836 32.6739 8.81836C37.5548 8.81836 40.3849 12.2227 40.3849 17.1446V31.131H36.8165V17.9649C36.8165 14.2325 34.9708 12.0996 31.8946 12.0996C28.6133 12.0996 26.5215 14.6836 26.5215 18.293V31.131H22.9531V9.39258Z" fill="currentColor"/>
+          <path d="M15.4375 9.39263H19.0059V31.131H15.4375V9.39263ZM19.9903 2.78908C19.9903 4.42971 18.7598 5.57816 17.2422 5.57816C15.7246 5.57816 14.4941 4.42971 14.4941 2.78908C14.4941 1.14845 15.7246 0 17.2422 0C18.7598 0 19.9903 1.14845 19.9903 2.78908Z" fill="currentColor"/>
+          <path d="M4.10158 6.19351C4.10158 2.58412 6.35746 0.287231 9.92583 0.287231H12.1817V3.48647H10.9512C8.65434 3.48647 7.66996 4.3478 7.66996 6.80875V9.39275H12.1817V12.674H7.66996V31.1312H4.10158V12.674H0V9.39275H4.10158V6.19351Z" fill="currentColor"/>
+        </svg>
+      </a>
+      <span class="status-tag">Lanseras 2026</span>
+    </header>
+
+    <!-- Main Hero with Prepress Crop Marks -->
+    <main class="hero-container">
+      <!-- DTP Crop Marks -->
+      <div class="crop-mark crop-tl-v"></div>
+      <div class="crop-mark crop-tl-h"></div>
+      <div class="crop-mark crop-tr-v"></div>
+      <div class="crop-mark crop-tr-h"></div>
+      <div class="crop-mark crop-bl-v"></div>
+      <div class="crop-mark crop-bl-h"></div>
+      <div class="crop-mark crop-br-v"></div>
+      <div class="crop-mark crop-br-h"></div>
+
+      <!-- Headline -->
+      <h1>Från medieplan till färdiga kampanjformat på sekunder.</h1>
+
+      <!-- Copy -->
+      <p class="lead">
+        Vi bygger det saknade lagret mellan medieplanering och kreativ produktion. Med <strong>Briefd</strong> förvandlas stökiga kalkylark till visuella formatkort. Med <strong>Finali AI</strong> automatiseras alla dina kampanjformat direkt till trycksäker produktion.
+      </p>
+
+      <!-- CTA -->
+      <div class="cta-group">
+        <a href="mailto:joakim@paido.se?subject=Finali%20AI%20-%20Intresseanm%C3%A4lan" class="cta-button">
+          <span>Intresserad av att veta mer? Kontakta oss</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+      <div>Briefd &amp; Finali AI &bull; Stockholm, Sverige</div>
+      <div>
+        <a href="mailto:joakim@paido.se">joakim@paido.se</a>
+      </div>
+    </footer>
+  </div>
+
+</body>
+</html>
