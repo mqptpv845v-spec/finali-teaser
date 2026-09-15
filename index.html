@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Finali AI & Briefd — The Missing Layer in Creative Production</title>
-  <meta name="description" content="Stop emailing spreadsheets. Finali AI and Briefd translate media plans into scale-accurate format cards and automated, print-ready campaign assets.">
+  <title>Finali — Accelerating the transition from plan to press</title>
+  <meta name="description" content="We close the gap between media strategy and technical delivery. Our platform translates fragmented campaign data into an autonomous production engine.">
 
   <!-- Open Graph -->
-  <meta property="og:title" content="Finali AI & Briefd">
-  <meta property="og:description" content="The missing layer between media planning and creative production.">
+  <meta property="og:title" content="Finali — Accelerating the transition from plan to press">
+  <meta property="og:description" content="We close the gap between media strategy and technical delivery.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://www.finali.ai">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23191A1C'/%3E%3Cpath d='M8 8h16v3H8zm0 6h11v3H8zm0 6h14v3H8z' fill='%23ffffff'/%3E%3C/svg%3E">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23000000'/%3E%3Cpath d='M8 8h16v3H8zm0 6h11v3H8zm0 6h14v3H8z' fill='%23ffffff'/%3E%3C/svg%3E">
 
   <!-- Google Fonts: Instrument Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,7 +21,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
 
   <style>
-    /* Reset & Viewport Constraints (Strict 100vw & 100vh) */
+    /* Reset & Base */
     *, *::before, *::after {
       box-sizing: border-box;
       margin: 0;
@@ -35,258 +35,207 @@
       max-height: 100dvh;
       overflow: hidden;
       background-color: #FFFFFF;
-      color: #191A1C;
+      color: #000000;
       font-family: 'Instrument Sans', -apple-system, BlinkMacSystemFont, sans-serif;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
 
-    /* Main Flex Shell */
+    /* Screen Canvas (Exact 100vw & 100vh Shell) */
     .screen-canvas {
       width: 100%;
       height: 100%;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: clamp(14px, 1.8vw, 24px);
+      padding: clamp(20px, 2.5vw, 36px) clamp(20px, 3vw, 44px) 0 clamp(20px, 3vw, 44px);
       position: relative;
     }
 
-    /* Authentic Hairline Crop Marks (0.5px hairline, 12px length, 4px corner gap) */
+    /* Authentic Prepress Hairline Crop Marks (0.5px hairline, 14px length, 4px corner gap) */
     .crop-mark {
       position: absolute;
       background-color: #000000;
       pointer-events: none;
-      z-index: 30;
+      z-index: 50;
     }
 
-    .crop-tl-v { top: -16px; left: 0; width: 0.5px; height: 12px; }
-    .crop-tl-h { top: 0; left: -16px; width: 12px; height: 0.5px; }
+    /* Top Corner Marks */
+    .crop-tl-v { top: 12px; left: 24px; width: 0.5px; height: 14px; }
+    .crop-tl-h { top: 24px; left: 12px; width: 14px; height: 0.5px; }
 
-    .crop-tr-v { top: -16px; right: 0; width: 0.5px; height: 12px; }
-    .crop-tr-h { top: 0; right: -16px; width: 12px; height: 0.5px; }
+    .crop-tr-v { top: 12px; right: 24px; width: 0.5px; height: 14px; }
+    .crop-tr-h { top: 24px; right: 12px; width: 14px; height: 0.5px; }
 
-    .crop-bl-v { bottom: -16px; left: 0; width: 0.5px; height: 12px; }
-    .crop-bl-h { bottom: 0; left: -16px; width: 12px; height: 0.5px; }
+    /* Bottom Corner Marks */
+    .crop-bl-v { bottom: 12px; left: 24px; width: 0.5px; height: 14px; }
+    .crop-bl-h { bottom: 24px; left: 12px; width: 14px; height: 0.5px; }
 
-    .crop-br-v { bottom: -16px; right: 0; width: 0.5px; height: 12px; }
-    .crop-br-h { bottom: 0; right: -16px; width: 12px; height: 0.5px; }
+    .crop-br-v { bottom: 12px; right: 24px; width: 0.5px; height: 14px; }
+    .crop-br-h { bottom: 24px; right: 12px; width: 14px; height: 0.5px; }
 
     /* Header */
     header {
       width: 100%;
-      height: clamp(36px, 4.5vh, 48px);
+      height: clamp(40px, 5vh, 52px);
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-shrink: 0;
       position: relative;
+      z-index: 40;
     }
 
     .logo-link {
       display: inline-flex;
       align-items: center;
       text-decoration: none;
-      color: #191A1C;
+      color: #000000;
     }
 
     .logo-link svg {
-      height: clamp(24px, 2.5vh, 32px);
+      height: clamp(26px, 3vh, 34px);
       width: auto;
       display: block;
     }
 
-    .header-cta {
-      background-color: #191A1C;
+    .cta-btn {
+      background-color: #000000;
       color: #FFFFFF;
       text-decoration: none;
-      padding: 10px 22px;
+      padding: clamp(10px, 1.2vh, 14px) clamp(18px, 1.8vw, 28px);
       font-weight: 600;
-      font-size: clamp(0.8rem, 0.9vw, 0.95rem);
+      font-size: clamp(0.85rem, 0.95vw, 1.05rem);
+      letter-spacing: -0.01em;
       border-radius: 0px;
-      transition: border-radius 0.35s ease, background-color 0.2s ease;
+      transition: border-radius 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease, opacity 0.2s ease;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      white-space: nowrap;
+      cursor: pointer;
     }
 
-    .header-cta:hover {
-      border-radius: 20px;
-      background-color: #000000;
+    .cta-btn:hover {
+      border-radius: 22px;
+      background-color: #1a1a1a;
     }
 
-    /* Bento Center Stage (Fills remaining height) */
-    .bento-stage {
+    /* Hero Section (Center Stage) */
+    .hero-content {
       flex: 1;
-      min-height: 0; /* Crucial: allows flex child to shrink properly within 100vh */
-      margin: clamp(10px, 1.4vh, 18px) 0;
-      position: relative;
-      background-color: #E6E6E6;
-      overflow: hidden;
-    }
-
-    .bento-backdrop {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      z-index: 0;
-    }
-
-    .bento-grid {
-      position: relative;
-      z-index: 10;
-      width: 100%;
-      height: 100%;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      grid-template-rows: 1.15fr 1fr;
-      gap: 0px;
-    }
-
-    /* Bento Tile Common Styles */
-    .tile {
-      position: relative;
-      overflow: hidden;
+      min-height: 0;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      padding: clamp(14px, 1.8vw, 28px);
-    }
-
-    .tile-tag {
-      font-size: clamp(0.72rem, 0.85vw, 0.95rem);
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      opacity: 0.9;
-    }
-
-    /* Row 1, Col 1-2: Big Tone-on-Tone Hero Headline Banner */
-    .tile-hero-span {
-      grid-column: span 2;
-      background-color: #173537;
-      color: #84CCEF;
       justify-content: center;
-      gap: clamp(8px, 1.2vh, 16px);
+      padding: clamp(10px, 2vh, 30px) 0;
+      max-width: 1280px;
     }
 
-    .hero-h1 {
-      font-size: clamp(2rem, 3.4vw, 4.2rem);
+    h1 {
+      font-size: clamp(2.8rem, 5.6vw, 6.2rem);
       font-weight: 700;
       line-height: 1.02;
       letter-spacing: -0.035em;
-      color: #84CCEF;
+      color: #000000;
+      margin-bottom: clamp(16px, 2.2vh, 28px);
+      max-width: 1100px;
     }
 
-    .hero-h1 span.accent {
-      color: #FFFFFF;
+    .hero-text {
+      font-size: clamp(1.1rem, 1.6vw, 1.85rem);
+      font-weight: 400;
+      line-height: 1.34;
+      letter-spacing: -0.015em;
+      color: #191A1C;
+      max-width: 920px;
     }
 
-    .hero-p {
-      font-size: clamp(0.88rem, 1.15vw, 1.25rem);
-      line-height: 1.35;
-      color: #84CCEF;
-      opacity: 0.92;
-      max-width: 94%;
+    /* Bottom Interactive Color Cards Bar */
+    .bottom-cards-bar {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      align-items: end;
+      position: relative;
+      z-index: 30;
+      margin-left: calc(-1 * clamp(20px, 3vw, 44px));
+      margin-right: calc(-1 * clamp(20px, 3vw, 44px));
+      width: calc(100% + (2 * clamp(20px, 3vw, 44px)));
     }
 
-    /* Row 1, Col 3: Magenta / Plum */
-    .tile-magenta {
-      background-color: #FFADEB;
-      color: #520037;
+    .color-card {
+      position: relative;
+      height: clamp(34px, 4.5vh, 48px);
+      padding: clamp(14px, 1.8vw, 24px);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      overflow: hidden;
+      cursor: pointer;
+      transition: height 0.45s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
     }
 
-    .tile-title {
-      font-size: clamp(1.15rem, 1.65vw, 2.1rem);
-      font-weight: 700;
-      line-height: 1.06;
-      letter-spacing: -0.025em;
-      margin-top: auto;
-      margin-bottom: clamp(6px, 0.8vh, 10px);
+    /* Hover Expansion (Slides up to reveal full content) */
+    .color-card:hover,
+    .color-card:focus-within {
+      height: clamp(260px, 35vh, 400px);
+      box-shadow: 0 -12px 36px rgba(0, 0, 0, 0.1);
+      z-index: 35;
     }
 
-    .tile-text {
-      font-size: clamp(0.76rem, 0.92vw, 1.05rem);
-      line-height: 1.32;
-      opacity: 0.92;
-    }
-
-    /* Row 1, Col 4: Transparent Window (Clouds peek through) */
-    .tile-window {
-      background: transparent;
-    }
-
-    /* Row 2, Col 1: Solid Deep Plum */
-    .tile-plum-solid {
-      background-color: #520037;
-    }
-
-    /* Row 2, Col 2: Earthy Taupe / Warm Yellow */
-    .tile-taupe {
-      background-color: #7C705A;
-      color: #FFFFA8;
-    }
-
-    /* Row 2, Col 3: Solid Warm Yellow */
-    .tile-yellow-solid {
-      background-color: #FFFE7D;
-    }
-
-    /* Row 2, Col 4: Sky Cyan with Direct CTA */
-    .tile-cyan-cta {
+    /* Card Themes */
+    /* 1. Sky Cyan */
+    .card-cyan {
       background-color: #84CCEF;
       color: #173537;
     }
 
-    .cta-tile-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      background-color: #173537;
-      color: #84CCEF;
-      text-decoration: none;
-      padding: clamp(10px, 1.2vh, 16px) clamp(14px, 1.4vw, 20px);
-      font-weight: 700;
-      font-size: clamp(0.82rem, 0.95vw, 1rem);
-      border-radius: 0px;
-      transition: border-radius 0.3s ease, background-color 0.2s ease, color 0.2s ease;
-      margin-top: clamp(8px, 1vh, 14px);
+    /* 2. Soft Pink / Magenta */
+    .card-pink {
+      background-color: #FFADEB;
+      color: #520037;
     }
 
-    .cta-tile-btn:hover {
-      border-radius: 20px;
+    /* 3. Bright Pale Yellow */
+    .card-yellow {
+      background-color: #FFFFA8;
+      color: #7C705A;
+    }
+
+    /* 4. Solid Black / Petroleum */
+    .card-dark {
       background-color: #000000;
       color: #FFFFFF;
     }
 
-    /* Footer */
-    footer {
-      width: 100%;
-      height: clamp(24px, 3.5vh, 32px);
+    /* Card Content Typography */
+    .card-header {
+      font-size: clamp(0.95rem, 1.15vw, 1.35rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: clamp(12px, 1.6vh, 20px);
+      white-space: nowrap;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      flex-shrink: 0;
-      font-size: clamp(0.74rem, 0.82vw, 0.88rem);
-      color: rgba(25, 26, 28, 0.55);
-      border-top: 0.5px solid rgba(25, 26, 28, 0.12);
-      padding-top: 6px;
+      width: 100%;
     }
 
-    footer a {
-      color: #191A1C;
-      text-decoration: none;
-      font-weight: 500;
+    .card-text {
+      font-size: clamp(0.85rem, 1.05vw, 1.2rem);
+      line-height: 1.38;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      opacity: 0.95;
+      transition: opacity 0.3s ease;
     }
 
-    footer a:hover {
-      text-decoration: underline;
+    .card-dark .card-text {
+      opacity: 0.85;
     }
 
-    /* Mobile & Smaller Screens fallback (Smooth scroll if height is restricted) */
-    @media (max-width: 900px), (max-height: 600px) {
+    /* Mobile Fallback */
+    @media (max-width: 768px) {
       html, body {
         height: auto;
         min-height: 100dvh;
@@ -296,62 +245,43 @@
       .screen-canvas {
         height: auto;
         min-height: 100dvh;
-        gap: 16px;
+        padding-bottom: 0;
       }
-      .bento-stage {
-        min-height: auto;
-        flex: none;
+      .hero-content {
+        padding: 36px 0;
       }
-      .bento-grid {
-        grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: auto;
-      }
-      .tile-hero-span {
-        grid-column: span 2;
-        min-height: 220px;
-      }
-      .tile {
-        min-height: 190px;
-      }
-      .tile-window {
-        display: none;
-      }
-      footer {
-        flex-direction: column;
-        align-items: flex-start;
-        height: auto;
-        gap: 4px;
-        padding-bottom: 12px;
-      }
-    }
-
-    @media (max-width: 560px) {
-      .bento-grid {
+      .bottom-cards-bar {
         grid-template-columns: 1fr;
       }
-      .tile-hero-span {
-        grid-column: span 1;
+      .color-card {
+        height: auto !important;
+        min-height: 160px;
+      }
+      .crop-mark {
+        display: none;
       }
     }
   </style>
 </head>
 <body>
 
+  <!-- Screen Canvas Shell -->
   <div class="screen-canvas">
-    
-    <!-- 1. Header (Framed with Crop Marks) -->
-    <header class="crop-frame">
-      <div class="crop-mark crop-tl-v"></div>
-      <div class="crop-mark crop-tl-h"></div>
-      <div class="crop-mark crop-tr-v"></div>
-      <div class="crop-mark crop-tr-h"></div>
-      <div class="crop-mark crop-bl-v"></div>
-      <div class="crop-mark crop-bl-h"></div>
-      <div class="crop-mark crop-br-v"></div>
-      <div class="crop-mark crop-br-h"></div>
 
-      <a href="https://www.finali.ai" class="logo-link" aria-label="Finali AI">
-        <!-- Exact Finali Logotype SVG -->
+    <!-- Prepress Corner Hairline Crop Marks -->
+    <div class="crop-mark crop-tl-v"></div>
+    <div class="crop-mark crop-tl-h"></div>
+    <div class="crop-mark crop-tr-v"></div>
+    <div class="crop-mark crop-tr-h"></div>
+    <div class="crop-mark crop-bl-v"></div>
+    <div class="crop-mark crop-bl-h"></div>
+    <div class="crop-mark crop-br-v"></div>
+    <div class="crop-mark crop-br-h"></div>
+
+    <!-- 1. Header with Finali Logotype and CTA Button -->
+    <header>
+      <a href="https://www.finali.ai" class="logo-link" aria-label="Finali">
+        <!-- Official Finali SVG Logotype -->
         <svg viewBox="0 0 81 32" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M75.4688 9.39263H79.0371V31.131H75.4688V9.39263ZM80.0215 2.78908C80.0215 4.42971 78.791 5.57816 77.2734 5.57816C75.7559 5.57816 74.5254 4.42971 74.5254 2.78908C74.5254 1.14845 75.7559 0 77.2734 0C78.791 0 80.0215 1.14845 80.0215 2.78908Z" fill="currentColor"/>
           <path d="M67.957 0.287231H71.5254V31.1312H67.957V0.287231Z" fill="currentColor"/>
@@ -362,106 +292,67 @@
         </svg>
       </a>
 
-      <a href="mailto:joakim@paido.se?subject=Finali%20AI%20Inquiry" class="header-cta">
-        <span>Contact joakim@paido.se</span>
-        <span>&rarr;</span>
+      <a href="mailto:joakim@paido.se?subject=Finali%20-%20Contact%20for%20more%20information" class="cta-btn">
+        Contact for more information
       </a>
     </header>
 
-    <!-- 2. Bento Stage (Exact 100vh Fit, Tone-on-Tone Rectangles, Halftone Backdrop) -->
-    <main class="bento-stage crop-frame">
-      <div class="crop-mark crop-tl-v"></div>
-      <div class="crop-mark crop-tl-h"></div>
-      <div class="crop-mark crop-tr-v"></div>
-      <div class="crop-mark crop-tr-h"></div>
-      <div class="crop-mark crop-bl-v"></div>
-      <div class="crop-mark crop-bl-h"></div>
-      <div class="crop-mark crop-br-v"></div>
-      <div class="crop-mark crop-br-h"></div>
-
-      <!-- Continuous Halftone Sky/Landscape Backdrop -->
-      <img src="./bento-bg.png" alt="Halftone backdrop" class="bento-backdrop">
-
-      <div class="bento-grid">
-        
-        <!-- Row 1, Span 2: Hero Headline Card (Petroleum & Cyan Tone-on-Tone) -->
-        <div class="tile tile-hero-span">
-          <span class="tile-tag">Briefd &bull; Finali AI</span>
-          <h1 class="hero-h1">
-            Stop emailing spreadsheets.<br>
-            <span class="accent">Automate your media plans.</span>
-          </h1>
-          <p class="hero-p">
-            The missing layer between media planning and creative production. Translate chaotic rows into live, scale-accurate format cards and generate dozens of print-ready assets in seconds.
-          </p>
-        </div>
-
-        <!-- Row 1, Col 3: Magenta & Plum Tone-on-Tone -->
-        <div class="tile tile-magenta">
-          <span class="tile-tag">01 / The Engine</span>
-          <div>
-            <h2 class="tile-title">Deterministic production.</h2>
-            <p class="tile-text">
-              Connect InDesign master files with your media plans. Output 80+ validated PDF/X and digital placements instantly.
-            </p>
-          </div>
-        </div>
-
-        <!-- Row 1, Col 4: Transparent Window (Halftone Clouds peek through) -->
-        <div class="tile tile-window"></div>
-
-        <!-- Row 2, Col 1: Solid Deep Plum -->
-        <div class="tile tile-plum-solid"></div>
-
-        <!-- Row 2, Col 2: Earthy Taupe & Pale Yellow Tone-on-Tone -->
-        <div class="tile tile-taupe">
-          <span class="tile-tag">02 / Publisher Specs</span>
-          <div>
-            <h2 class="tile-title">Nordic spec database.</h2>
-            <p class="tile-text">
-              Centralized, dagsaktuell technical requirements from Clear Channel, JCDecaux, Bonnier, Schibsted, and SDR.
-            </p>
-          </div>
-        </div>
-
-        <!-- Row 2, Col 3: Solid Warm Yellow -->
-        <div class="tile tile-yellow-solid"></div>
-
-        <!-- Row 2, Col 4: Cyan & Petroleum Tone-on-Tone with CTA -->
-        <div class="tile tile-cyan-cta">
-          <span class="tile-tag">03 / Early Access</span>
-          <div>
-            <h2 class="tile-title">Interested to learn more?</h2>
-            <p class="tile-text">
-              Piloting with select agencies and brand teams. Let's talk.
-            </p>
-            <a href="mailto:joakim@paido.se?subject=Finali%20AI%20-%20Early%20Access%20Inquiry" class="cta-tile-btn">
-              <span>Contact Joakim</span>
-              <span>&rarr;</span>
-            </a>
-          </div>
-        </div>
-
-      </div>
+    <!-- 2. Hero Content -->
+    <main class="hero-content">
+      <h1>Accelerating the transition from plan to press.</h1>
+      <p class="hero-text">
+        We close the gap between media strategy and technical delivery. Our platform translates fragmented campaign data into an autonomous production engine, giving brands and agencies the power to visualize specs and generate flawless multi-format output instantly.
+      </p>
     </main>
 
-    <!-- 3. Footer (Framed with Crop Marks) -->
-    <footer class="crop-frame">
-      <div class="crop-mark crop-tl-v"></div>
-      <div class="crop-mark crop-tl-h"></div>
-      <div class="crop-mark crop-tr-v"></div>
-      <div class="crop-mark crop-tr-h"></div>
-      <div class="crop-mark crop-bl-v"></div>
-      <div class="crop-mark crop-bl-h"></div>
-      <div class="crop-mark crop-br-v"></div>
-      <div class="crop-mark crop-br-h"></div>
+    <!-- 3. Bottom Interactive Color Cards Bar (Hover to Expand) -->
+    <section class="bottom-cards-bar" aria-label="Explore more information">
+      
+      <!-- Cyan Card -->
+      <article class="color-card card-cyan" tabindex="0">
+        <div class="card-header">
+          <span>Briefd</span>
+          <span>&uarr;</span>
+        </div>
+        <p class="card-text">
+          A focused visual workspace that translates static spreadsheets into interactive, scale-accurate format cards shared via a single live link.
+        </p>
+      </article>
 
-      <div>Briefd &amp; Finali AI &bull; Stockholm, Sweden</div>
-      <div>ALG 20 Compliant Prepress Engine</div>
-      <div>
-        Direct: <a href="mailto:joakim@paido.se">joakim@paido.se</a>
-      </div>
-    </footer>
+      <!-- Pink Card -->
+      <article class="color-card card-pink" tabindex="0">
+        <div class="card-header">
+          <span>Automated Engine</span>
+          <span>&uarr;</span>
+        </div>
+        <p class="card-text">
+          Deterministic rendering connects approved InDesign masters with live campaign data to output 80+ print-ready PDF/X files in seconds.
+        </p>
+      </article>
+
+      <!-- Yellow Card (Matching Figma Frame 16) -->
+      <article class="color-card card-yellow" tabindex="0">
+        <div class="card-header">
+          <span>Who We Are</span>
+          <span>&uarr;</span>
+        </div>
+        <p class="card-text">
+          Designers and technologists who spent years inside agencies. We know the quiet dread of receiving a 47-row spreadsheet on a Friday afternoon and being expected to deliver production-ready artwork across thirty placements by Monday morning.
+        </p>
+      </article>
+
+      <!-- Dark Card -->
+      <article class="color-card card-dark" tabindex="0">
+        <div class="card-header">
+          <span>Publisher Specs</span>
+          <span>&uarr;</span>
+        </div>
+        <p class="card-text">
+          Centralized pre-flight rules and verified delivery specifications for major Nordic media houses, distributörer, and out-of-home networks.
+        </p>
+      </article>
+
+    </section>
 
   </div>
 
