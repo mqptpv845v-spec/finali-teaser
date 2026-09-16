@@ -472,5 +472,155 @@
 
   </div>
 
+  <!-- Interactive Dot Grid Canvas (scales with mouse proximity, fades when idle) -->
+  <canvas id="dot-grid-canvas" style="position: fixed; inset: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 5;"></canvas>
+
+  <script>
+    (function() {
+      var canvas = document.getElementById('dot-grid-canvas');
+      if (!canvas) return;
+      var ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      var SPACING = 32;
+      var INFLUENCE_RADIUS = 220;
+      var BASE_RADIUS = 1.2;
+      var MAX_RADIUS = 5.5;
+      var IDLE_TIMEOUT = 600;
+      var FADE_SPEED = 0.04;
+      var ACTIVE_OPACITY = 0.85;
+      var DOT_COLOR = [25, 26, 28]; // #191A1C
+
+      var width = 0;
+      var height = 0;
+      var dpr = 1;
+      var rafId = null;
+
+      var mouse = {
+        x: -9999,
+        y: -9999,
+        lastMoveTime: 0,
+        active: false
+      };
+
+      var currentActivity = 0;
+      var targetActivity = 0;
+
+      function resize() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+        canvas.width = Math.floor(width * dpr);
+        canvas.height = Math.floor(height * dpr);
+        canvas.style.width = width + 'px';
+        canvas.style.height = height + 'px';
+
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        drawFrame();
+      }
+
+      function startAnimation() {
+        if (rafId === null) {
+          rafId = requestAnimationFrame(loop);
+        }
+      }
+
+      function stopAnimation() {
+        if (rafId !== null) {
+          cancelAnimationFrame(rafId);
+          rafId = null;
+        }
+      }
+
+      function drawFrame() {
+        ctx.clearRect(0, 0, width, height);
+
+        if (currentActivity <= 0.001) return;
+
+        var cols = Math.ceil(width / SPACING) + 1;
+        var rows = Math.ceil(height / SPACING) + 1;
+        var fieldRadius = INFLUENCE_RADIUS * 1.6;
+
+        for (var i = 0; i < cols; i++) {
+          var x = i * SPACING;
+          for (var j = 0; j < rows; j++) {
+            var y = j * SPACING;
+
+            var dx = x - mouse.x;
+            var dy = y - mouse.y;
+            var dist = Math.sqrt(dx * dx + dy * dy);
+
+            var proximity = 0;
+            var scaleFactor = 0;
+
+            if (dist < fieldRadius) {
+              proximity = Math.max(0, 1 - dist / fieldRadius);
+            }
+
+            if (dist < INFLUENCE_RADIUS) {
+              var inner = 1 - dist / INFLUENCE_RADIUS;
+              scaleFactor = Math.sin((inner * Math.PI) / 2);
+            }
+
+            var currentRadius = BASE_RADIUS + (MAX_RADIUS - BASE_RADIUS) * scaleFactor;
+            var localAlpha = proximity * currentActivity * ACTIVE_OPACITY;
+
+            if (localAlpha > 0.008 && currentRadius > 0.1) {
+              ctx.beginPath();
+              ctx.arc(x, y, currentRadius, 0, Math.PI * 2);
+              ctx.fillStyle = 'rgba(' + DOT_COLOR[0] + ',' + DOT_COLOR[1] + ',' + DOT_COLOR[2] + ',' + localAlpha.toFixed(3) + ')';
+              ctx.fill();
+            }
+          }
+        }
+      }
+
+      function loop() {
+        var now = performance.now();
+        var timeSinceMove = now - mouse.lastMoveTime;
+
+        if (mouse.active && timeSinceMove < IDLE_TIMEOUT) {
+          targetActivity = 1;
+        } else {
+          targetActivity = 0;
+        }
+
+        var delta = targetActivity - currentActivity;
+        if (Math.abs(delta) > 0.001) {
+          var speed = delta > 0 ? 0.15 : FADE_SPEED;
+          currentActivity += delta * speed;
+        } else {
+          currentActivity = targetActivity;
+        }
+
+        drawFrame();
+
+        if (currentActivity > 0.001 || (mouse.active && timeSinceMove < IDLE_TIMEOUT)) {
+          rafId = requestAnimationFrame(loop);
+        } else {
+          currentActivity = 0;
+          drawFrame();
+          stopAnimation();
+        }
+      }
+
+      window.addEventListener('pointermove', function(e) {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+        mouse.lastMoveTime = performance.now();
+        mouse.active = true;
+        startAnimation();
+      }, { passive: true });
+
+      window.addEventListener('pointerleave', function() {
+        mouse.active = false;
+        startAnimation();
+      }, { passive: true });
+
+      window.addEventListener('resize', resize);
+      resize();
+    })();
+  </script>
 </body>
 </html>
