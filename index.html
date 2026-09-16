@@ -482,15 +482,41 @@
       var ctx = canvas.getContext('2d');
       if (!ctx) return;
 
+      var isMobile = false;
       var SPACING = 28;
-      var MAX_RINGS = 20; // Rejält mycket större cirkel (20 synliga ringar, ~560px radie)
-      var CENTER_RADIUS = 13.0; // Mycket större och kraftigare prickar i mitten
+      var MAX_RINGS = 20;
+      var CENTER_RADIUS = 13.0;
       var MIN_RADIUS = 0.7;
-      var IDLE_TIMEOUT = 500; // Snabbare start på avtoning (0.5s)
-      var FADE_SPEED = 0.08; // Tonar bort betydligt snabbare
+      var IDLE_TIMEOUT = 500;
+      var FADE_SPEED = 0.08;
       var ACTIVE_OPACITY = 0.92;
-      var MOUSE_FOLLOW_EASE = 0.06; // Mer delay/eftersläpning på muspekaren
+      var MOUSE_FOLLOW_EASE = 0.06;
       var DOT_COLOR = [25, 26, 28]; // #191A1C
+
+      function updateResponsiveConfig() {
+        isMobile = window.innerWidth <= 768;
+        if (isMobile) {
+          // Mycket mer diskret på mobil
+          SPACING = 24;
+          MAX_RINGS = 6.0; // Liten kompakt radie (~140px)
+          CENTER_RADIUS = 4.2; // Små subtila prickar (4.2px istället för 13px)
+          MIN_RADIUS = 0.5;
+          ACTIVE_OPACITY = 0.38; // Mjuk halvgenomskinlig ton (38% istället för 92%)
+          IDLE_TIMEOUT = 250; // Tonar bort snabbt efter touch
+          FADE_SPEED = 0.12;
+          MOUSE_FOLLOW_EASE = 0.14;
+        } else {
+          // Desktop: full maffig effekt
+          SPACING = 28;
+          MAX_RINGS = 20;
+          CENTER_RADIUS = 13.0;
+          MIN_RADIUS = 0.7;
+          ACTIVE_OPACITY = 0.92;
+          IDLE_TIMEOUT = 500;
+          FADE_SPEED = 0.08;
+          MOUSE_FOLLOW_EASE = 0.06;
+        }
+      }
 
       var width = 0;
       var height = 0;
@@ -517,6 +543,7 @@
       var targetActivity = 0;
 
       function resize() {
+        updateResponsiveConfig();
         width = window.innerWidth;
         height = window.innerHeight;
         dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -570,7 +597,7 @@
             var mouseRadius = 0;
             var mouseAlpha = 0;
 
-            // 1. Mus-interaktion med stor koncentrisk cirkel
+            // 1. Mus-interaktion med koncentrisk cirkel
             if (hasMouseEffect) {
               var dx = x - smoothMouse.x;
               var dy = y - smoothMouse.y;
@@ -578,7 +605,6 @@
 
               if (dist < maxDistance) {
                 var proximity = 1 - (dist / maxDistance);
-                // Mitten störst, raden runt mindre, sen nästa och nästa (många synliga ringar)
                 var tierFactor = Math.pow(proximity, 2.1);
                 mouseRadius = MIN_RADIUS + (CENTER_RADIUS - MIN_RADIUS) * tierFactor;
 
@@ -613,8 +639,8 @@
                 var wave = (Math.cos(phase) * 0.5 + 0.5) * envelope * temporalDecay * spatialDecay;
 
                 if (wave > 0.01) {
-                  rippleRadius = Math.max(rippleRadius, wave * 13.0);
-                  rippleAlpha = Math.max(rippleAlpha, wave * 0.95);
+                  rippleRadius = Math.max(rippleRadius, wave * rip.amplitude);
+                  rippleAlpha = Math.max(rippleAlpha, wave * rip.alpha);
                 }
               }
             }
@@ -676,7 +702,7 @@
         }
       }
 
-      // Musrörelse
+      // Mus- och touchrörelse
       window.addEventListener('pointermove', function(e) {
         mouse.x = e.clientX;
         mouse.y = e.clientY;
@@ -690,16 +716,18 @@
         startAnimation();
       }, { passive: true });
 
-      // Klick: Droppe i vattnet med expanderande pulsvågor
+      // Klick / touch-tap: Droppe i vattnet med expanderande pulsvågor
       window.addEventListener('pointerdown', function(e) {
         ripples.push({
           x: e.clientX,
           y: e.clientY,
           startTime: performance.now(),
-          duration: 1600, // Snabbare, rappare vågutbredning
-          speed: 0.44,    // Något snabbare våghastighet
-          wavelength: 60, // Avstånd mellan vågtoppar
-          maxRadius: Math.max(window.innerWidth, window.innerHeight) * 1.1
+          duration: isMobile ? 900 : 1600,
+          speed: isMobile ? 0.30 : 0.44,
+          wavelength: isMobile ? 35 : 60,
+          maxRadius: isMobile ? 220 : Math.max(window.innerWidth, window.innerHeight) * 1.1,
+          amplitude: isMobile ? 4.5 : 13.0,
+          alpha: isMobile ? 0.38 : 0.95
         });
         startAnimation();
       }, { passive: true });
