@@ -482,13 +482,14 @@
       var ctx = canvas.getContext('2d');
       if (!ctx) return;
 
-      var SPACING = 30;
-      var MAX_RINGS = 11.5; // Mycket större cirkel (11+ synliga ringar)
-      var CENTER_RADIUS = 10.0; // Stor tydlig mitt
-      var MIN_RADIUS = 0.8;
-      var IDLE_TIMEOUT = 1000; // 1s delay innan fade startar
-      var FADE_SPEED = 0.035;
-      var ACTIVE_OPACITY = 0.90;
+      var SPACING = 28;
+      var MAX_RINGS = 20; // Rejält mycket större cirkel (20 synliga ringar, ~560px radie)
+      var CENTER_RADIUS = 13.0; // Mycket större och kraftigare prickar i mitten
+      var MIN_RADIUS = 0.7;
+      var IDLE_TIMEOUT = 2200; // 2.2 sekunder delay innan fade startar
+      var FADE_SPEED = 0.02; // Längre och mjukare fade out
+      var ACTIVE_OPACITY = 0.92;
+      var MOUSE_FOLLOW_EASE = 0.06; // Mer delay/eftersläpning på muspekaren
       var DOT_COLOR = [25, 26, 28]; // #191A1C
 
       var width = 0;
@@ -578,10 +579,10 @@
               if (dist < maxDistance) {
                 var proximity = 1 - (dist / maxDistance);
                 // Mitten störst, raden runt mindre, sen nästa och nästa (många synliga ringar)
-                var tierFactor = Math.pow(proximity, 2.0);
+                var tierFactor = Math.pow(proximity, 2.1);
                 mouseRadius = MIN_RADIUS + (CENTER_RADIUS - MIN_RADIUS) * tierFactor;
 
-                var alphaFactor = Math.pow(proximity, 1.2);
+                var alphaFactor = Math.pow(proximity, 1.15);
                 mouseAlpha = alphaFactor * currentActivity * ACTIVE_OPACITY;
               }
             }
@@ -606,14 +607,14 @@
               if (Math.abs(deltaWave) < rip.wavelength * 2.2) {
                 var phase = (deltaWave / rip.wavelength) * Math.PI * 2;
                 var envelope = Math.exp(-Math.pow(deltaWave / (rip.wavelength * 0.85), 2));
-                var temporalDecay = (1 - progress) * (1 - progress * 0.5);
+                var temporalDecay = (1 - progress) * (1 - progress * 0.4);
                 var spatialDecay = Math.max(0, 1 - rdist / rip.maxRadius);
 
                 var wave = (Math.cos(phase) * 0.5 + 0.5) * envelope * temporalDecay * spatialDecay;
 
                 if (wave > 0.01) {
-                  rippleRadius = Math.max(rippleRadius, wave * 9.5);
-                  rippleAlpha = Math.max(rippleAlpha, wave * 0.90);
+                  rippleRadius = Math.max(rippleRadius, wave * 13.0);
+                  rippleAlpha = Math.max(rippleAlpha, wave * 0.95);
                 }
               }
             }
@@ -642,8 +643,8 @@
             smoothMouse.x = mouse.x;
             smoothMouse.y = mouse.y;
           } else {
-            smoothMouse.x += (mouse.x - smoothMouse.x) * 0.12;
-            smoothMouse.y += (mouse.y - smoothMouse.y) * 0.12;
+            smoothMouse.x += (mouse.x - smoothMouse.x) * MOUSE_FOLLOW_EASE;
+            smoothMouse.y += (mouse.y - smoothMouse.y) * MOUSE_FOLLOW_EASE;
           }
         }
 
@@ -655,7 +656,7 @@
 
         var delta = targetActivity - currentActivity;
         if (Math.abs(delta) > 0.001) {
-          var speed = delta > 0 ? 0.12 : FADE_SPEED;
+          var speed = delta > 0 ? 0.10 : FADE_SPEED;
           currentActivity += delta * speed;
         } else {
           currentActivity = targetActivity;
@@ -695,10 +696,10 @@
           x: e.clientX,
           y: e.clientY,
           startTime: performance.now(),
-          duration: 1600, // 1.6s livstid för vågen
-          speed: 0.42,    // ~420px/s spridningshastighet
-          wavelength: 55, // Avstånd mellan vågtoppar
-          maxRadius: Math.max(window.innerWidth, window.innerHeight) * 0.8
+          duration: 2400, // 2.4s lång våg som rullar ut
+          speed: 0.38,    // Mjuk vattenvågshastighet
+          wavelength: 65, // Avstånd mellan vågtoppar
+          maxRadius: Math.max(window.innerWidth, window.innerHeight) * 1.2
         });
         startAnimation();
       }, { passive: true });
