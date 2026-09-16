@@ -486,8 +486,8 @@
       var MAX_RINGS = 20; // Rejält mycket större cirkel (20 synliga ringar, ~560px radie)
       var CENTER_RADIUS = 13.0; // Mycket större och kraftigare prickar i mitten
       var MIN_RADIUS = 0.7;
-      var IDLE_TIMEOUT = 2200; // 2.2 sekunder delay innan fade startar
-      var FADE_SPEED = 0.02; // Längre och mjukare fade out
+      var IDLE_TIMEOUT = 500; // Snabbare start på avtoning (0.5s)
+      var FADE_SPEED = 0.08; // Tonar bort betydligt snabbare
       var ACTIVE_OPACITY = 0.92;
       var MOUSE_FOLLOW_EASE = 0.06; // Mer delay/eftersläpning på muspekaren
       var DOT_COLOR = [25, 26, 28]; // #191A1C
@@ -696,10 +696,10 @@
           x: e.clientX,
           y: e.clientY,
           startTime: performance.now(),
-          duration: 2400, // 2.4s lång våg som rullar ut
-          speed: 0.38,    // Mjuk vattenvågshastighet
-          wavelength: 65, // Avstånd mellan vågtoppar
-          maxRadius: Math.max(window.innerWidth, window.innerHeight) * 1.2
+          duration: 1600, // Snabbare, rappare vågutbredning
+          speed: 0.44,    // Något snabbare våghastighet
+          wavelength: 60, // Avstånd mellan vågtoppar
+          maxRadius: Math.max(window.innerWidth, window.innerHeight) * 1.1
         });
         startAnimation();
       }, { passive: true });
