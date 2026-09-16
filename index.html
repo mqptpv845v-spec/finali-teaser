@@ -482,11 +482,11 @@
       var ctx = canvas.getContext('2d');
       if (!ctx) return;
 
-      var SPACING = 32;
-      var MAX_RINGS = 4.8;
-      var CENTER_RADIUS = 8.5; // Större prickar i mitten
+      var SPACING = 30;
+      var MAX_RINGS = 11.5; // Mycket större cirkel (11+ synliga ringar)
+      var CENTER_RADIUS = 10.0; // Stor tydlig mitt
       var MIN_RADIUS = 0.8;
-      var IDLE_TIMEOUT = 1000; // 1 sekund delay innan fade startar
+      var IDLE_TIMEOUT = 1000; // 1s delay innan fade startar
       var FADE_SPEED = 0.035;
       var ACTIVE_OPACITY = 0.90;
       var DOT_COLOR = [25, 26, 28]; // #191A1C
@@ -508,6 +508,9 @@
         x: -9999,
         y: -9999
       };
+
+      // Vattendroppe-vågor vid klick
+      var ripples = [];
 
       var currentActivity = 0;
       var targetActivity = 0;
@@ -542,7 +545,17 @@
       function drawFrame() {
         ctx.clearRect(0, 0, width, height);
 
-        if (currentActivity <= 0.001 || smoothMouse.x === -9999) return;
+        var now = performance.now();
+
+        // Rensa utgångna vatten-vågor
+        ripples = ripples.filter(function(r) {
+          return (now - r.startTime) < r.duration;
+        });
+
+        var hasMouseEffect = currentActivity > 0.001 && smoothMouse.x !== -9999;
+        var hasRipples = ripples.length > 0;
+
+        if (!hasMouseEffect && !hasRipples) return;
 
         var cols = Math.ceil(width / SPACING) + 1;
         var rows = Math.ceil(height / SPACING) + 1;
@@ -553,27 +566,66 @@
           for (var j = 0; j < rows; j++) {
             var y = j * SPACING;
 
-            var dx = x - smoothMouse.x;
-            var dy = y - smoothMouse.y;
-            var dist = Math.sqrt(dx * dx + dy * dy);
+            var mouseRadius = 0;
+            var mouseAlpha = 0;
 
-            if (dist >= maxDistance) continue;
+            // 1. Mus-interaktion med stor koncentrisk cirkel
+            if (hasMouseEffect) {
+              var dx = x - smoothMouse.x;
+              var dy = y - smoothMouse.y;
+              var dist = Math.sqrt(dx * dx + dy * dy);
 
-            // Proximity från 1 i centrum till 0 vid yttersta ringen
-            var proximity = 1 - (dist / maxDistance);
+              if (dist < maxDistance) {
+                var proximity = 1 - (dist / maxDistance);
+                // Mitten störst, raden runt mindre, sen nästa och nästa (många synliga ringar)
+                var tierFactor = Math.pow(proximity, 2.0);
+                mouseRadius = MIN_RADIUS + (CENTER_RADIUS - MIN_RADIUS) * tierFactor;
 
-            // Koncentrisk falloff: Mitten störst, raden runt mindre, sen nästa och nästa
-            var tierFactor = Math.pow(proximity, 2.2);
-            var currentRadius = MIN_RADIUS + (CENTER_RADIUS - MIN_RADIUS) * tierFactor;
+                var alphaFactor = Math.pow(proximity, 1.2);
+                mouseAlpha = alphaFactor * currentActivity * ACTIVE_OPACITY;
+              }
+            }
 
-            // Opacitet faller också mjukt per ring
-            var alphaFactor = Math.pow(proximity, 1.3);
-            var localAlpha = alphaFactor * currentActivity * ACTIVE_OPACITY;
+            // 2. Klick-effekt: Droppe i vattnet (expanderande pulsvågor)
+            var rippleRadius = 0;
+            var rippleAlpha = 0;
 
-            if (localAlpha > 0.008 && currentRadius > 0.2) {
+            for (var rIdx = 0; rIdx < ripples.length; rIdx++) {
+              var rip = ripples[rIdx];
+              var elapsed = now - rip.startTime;
+              var progress = elapsed / rip.duration; // 0 till 1
+              var waveFront = elapsed * rip.speed; // expanderande radie
+
+              var rdx = x - rip.x;
+              var rdy = y - rip.y;
+              var rdist = Math.sqrt(rdx * rdx + rdy * rdy);
+
+              var deltaWave = rdist - waveFront;
+
+              // Vågpaket med 2-3 pulserande ringar
+              if (Math.abs(deltaWave) < rip.wavelength * 2.2) {
+                var phase = (deltaWave / rip.wavelength) * Math.PI * 2;
+                var envelope = Math.exp(-Math.pow(deltaWave / (rip.wavelength * 0.85), 2));
+                var temporalDecay = (1 - progress) * (1 - progress * 0.5);
+                var spatialDecay = Math.max(0, 1 - rdist / rip.maxRadius);
+
+                var wave = (Math.cos(phase) * 0.5 + 0.5) * envelope * temporalDecay * spatialDecay;
+
+                if (wave > 0.01) {
+                  rippleRadius = Math.max(rippleRadius, wave * 9.5);
+                  rippleAlpha = Math.max(rippleAlpha, wave * 0.90);
+                }
+              }
+            }
+
+            // Kombinera mus och droppvågor
+            var finalRadius = Math.max(mouseRadius, rippleRadius);
+            var finalAlpha = Math.min(1.0, mouseAlpha + rippleAlpha);
+
+            if (finalAlpha > 0.008 && finalRadius > 0.2) {
               ctx.beginPath();
-              ctx.arc(x, y, currentRadius, 0, Math.PI * 2);
-              ctx.fillStyle = 'rgba(' + DOT_COLOR[0] + ',' + DOT_COLOR[1] + ',' + DOT_COLOR[2] + ',' + localAlpha.toFixed(3) + ')';
+              ctx.arc(x, y, finalRadius, 0, Math.PI * 2);
+              ctx.fillStyle = 'rgba(' + DOT_COLOR[0] + ',' + DOT_COLOR[1] + ',' + DOT_COLOR[2] + ',' + finalAlpha.toFixed(3) + ')';
               ctx.fill();
             }
           }
@@ -612,8 +664,9 @@
         drawFrame();
 
         var isStillMovingSmoothly = mouse.active && (Math.abs(mouse.x - smoothMouse.x) > 0.5 || Math.abs(mouse.y - smoothMouse.y) > 0.5);
+        var hasActiveRipples = ripples.length > 0;
 
-        if (currentActivity > 0.001 || (mouse.active && timeSinceMove < IDLE_TIMEOUT) || isStillMovingSmoothly) {
+        if (currentActivity > 0.001 || (mouse.active && timeSinceMove < IDLE_TIMEOUT) || isStillMovingSmoothly || hasActiveRipples) {
           rafId = requestAnimationFrame(loop);
         } else {
           currentActivity = 0;
@@ -622,6 +675,7 @@
         }
       }
 
+      // Musrörelse
       window.addEventListener('pointermove', function(e) {
         mouse.x = e.clientX;
         mouse.y = e.clientY;
@@ -632,6 +686,20 @@
 
       window.addEventListener('pointerleave', function() {
         mouse.active = false;
+        startAnimation();
+      }, { passive: true });
+
+      // Klick: Droppe i vattnet med expanderande pulsvågor
+      window.addEventListener('pointerdown', function(e) {
+        ripples.push({
+          x: e.clientX,
+          y: e.clientY,
+          startTime: performance.now(),
+          duration: 1600, // 1.6s livstid för vågen
+          speed: 0.42,    // ~420px/s spridningshastighet
+          wavelength: 55, // Avstånd mellan vågtoppar
+          maxRadius: Math.max(window.innerWidth, window.innerHeight) * 0.8
+        });
         startAnimation();
       }, { passive: true });
 
