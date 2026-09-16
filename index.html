@@ -485,7 +485,7 @@
       var isMobile = false;
       var SPACING = 28;
       var MAX_RINGS = 20;
-      var CENTER_RADIUS = 13.0;
+      var CENTER_RADIUS = 11.7; // 10% mindre i mitten (från 13.0px till 11.7px)
       var MIN_RADIUS = 0.7;
       var IDLE_TIMEOUT = 500;
       var FADE_SPEED = 0.08;
@@ -499,17 +499,17 @@
           // Mycket mer diskret på mobil
           SPACING = 24;
           MAX_RINGS = 6.0; // Liten kompakt radie (~140px)
-          CENTER_RADIUS = 4.2; // Små subtila prickar (4.2px istället för 13px)
+          CENTER_RADIUS = 4.2; // Små subtila prickar (4.2px)
           MIN_RADIUS = 0.5;
           ACTIVE_OPACITY = 0.38; // Mjuk halvgenomskinlig ton (38% istället för 92%)
           IDLE_TIMEOUT = 250; // Tonar bort snabbt efter touch
           FADE_SPEED = 0.12;
           MOUSE_FOLLOW_EASE = 0.14;
         } else {
-          // Desktop: full maffig effekt
+          // Desktop: 10% mindre i mitten för en ännu mer balanserad look
           SPACING = 28;
           MAX_RINGS = 20;
-          CENTER_RADIUS = 13.0;
+          CENTER_RADIUS = 11.7;
           MIN_RADIUS = 0.7;
           ACTIVE_OPACITY = 0.92;
           IDLE_TIMEOUT = 500;
@@ -726,7 +726,7 @@
           speed: isMobile ? 0.30 : 0.44,
           wavelength: isMobile ? 35 : 60,
           maxRadius: isMobile ? 220 : Math.max(window.innerWidth, window.innerHeight) * 1.1,
-          amplitude: isMobile ? 4.5 : 13.0,
+          amplitude: isMobile ? 4.5 : 11.7,
           alpha: isMobile ? 0.38 : 0.95
         });
         startAnimation();
