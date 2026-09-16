@@ -661,39 +661,54 @@
 
       function loop() {
         var now = performance.now();
-        var timeSinceMove = now - mouse.lastMoveTime;
 
-        // Flytande fördröjning / delay efter muspekaren
+        var dx = mouse.x - smoothMouse.x;
+        var dy = mouse.y - smoothMouse.y;
+        var lagDist = Math.sqrt(dx * dx + dy * dy);
+
+        // Flytande fördröjning efter muspekaren
         if (mouse.active) {
           if (smoothMouse.x === -9999) {
             smoothMouse.x = mouse.x;
             smoothMouse.y = mouse.y;
+            lagDist = 0;
           } else {
-            smoothMouse.x += (mouse.x - smoothMouse.x) * MOUSE_FOLLOW_EASE;
-            smoothMouse.y += (mouse.y - smoothMouse.y) * MOUSE_FOLLOW_EASE;
+            smoothMouse.x += dx * MOUSE_FOLLOW_EASE;
+            smoothMouse.y += dy * MOUSE_FOLLOW_EASE;
           }
         }
 
-        if (mouse.active && timeSinceMove < IDLE_TIMEOUT) {
-          targetActivity = 1;
-        } else {
-          targetActivity = 0;
+        // När den når fram till musen (lagDist -> 0) är opaciteten 0!
+        // Endast under pågående rörelse, när formationen släpar efter musen, syns den.
+        var targetActivity = 0;
+        if (mouse.active && lagDist > 2.0) {
+          targetActivity = Math.min(1.0, (lagDist - 2.0) / 32.0);
         }
 
         var delta = targetActivity - currentActivity;
         if (Math.abs(delta) > 0.001) {
-          var speed = delta > 0 ? 0.10 : FADE_SPEED;
+          var speed = delta > 0 ? 0.15 : FADE_SPEED;
           currentActivity += delta * speed;
         } else {
           currentActivity = targetActivity;
         }
 
+        // När den nått ända fram till musen: dämpa rent till 0
+        if (lagDist < 1.0) {
+          currentActivity = Math.max(0, currentActivity - FADE_SPEED * 1.5);
+          if (currentActivity < 0.005) {
+            currentActivity = 0;
+            smoothMouse.x = mouse.x;
+            smoothMouse.y = mouse.y;
+          }
+        }
+
         drawFrame();
 
-        var isStillMovingSmoothly = mouse.active && (Math.abs(mouse.x - smoothMouse.x) > 0.5 || Math.abs(mouse.y - smoothMouse.y) > 0.5);
         var hasActiveRipples = ripples.length > 0;
+        var isStillMoving = mouse.active && lagDist >= 1.0;
 
-        if (currentActivity > 0.001 || (mouse.active && timeSinceMove < IDLE_TIMEOUT) || isStillMovingSmoothly || hasActiveRipples) {
+        if (currentActivity > 0.001 || isStillMoving || hasActiveRipples) {
           rafId = requestAnimationFrame(loop);
         } else {
           currentActivity = 0;
@@ -704,9 +719,12 @@
 
       // Mus- och touchrörelse
       window.addEventListener('pointermove', function(e) {
+        // Ignorera stillastående/redundanta händelser (eliminerar blinkning)
+        if (Math.abs(e.clientX - mouse.x) < 1.0 && Math.abs(e.clientY - mouse.y) < 1.0) {
+          return;
+        }
         mouse.x = e.clientX;
         mouse.y = e.clientY;
-        mouse.lastMoveTime = performance.now();
         mouse.active = true;
         startAnimation();
       }, { passive: true });
